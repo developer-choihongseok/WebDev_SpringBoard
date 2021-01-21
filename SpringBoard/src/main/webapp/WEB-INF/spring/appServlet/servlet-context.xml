@@ -39,7 +39,7 @@
 		</beans:property>
 	</beans:bean>
 	
-	<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+	<!-- <beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<beans:constructor-arg ref="hikariConfig"/>
 	</beans:bean>
 	
@@ -57,6 +57,6 @@
             <beans:prop key="password">${dataSource.password}</beans:prop>
         </beans:props>
     </beans:property>
-	</beans:bean>
+	</beans:bean> -->
 	
 </beans:beans>
