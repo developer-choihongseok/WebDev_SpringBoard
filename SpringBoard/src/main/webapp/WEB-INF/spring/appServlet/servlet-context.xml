@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<!-- 서블릿으로부터 주소값 매핑을 해준다. RequestMapping을 사용할 수 있게 한다 . 즉, 무조건 있어야 한다!! -->
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+	
+	<!-- 어노테이션 검색 -->
+	<context:component-scan base-package="com.koreait.sboard" />
+	
+	<!-- webapp 아래에 resources안에 있는 파일들을 매핑한다. -->
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/res/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="order" value="2"/>
+	</beans:bean>
+	
+	<beans:bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+		<beans:property name="order" value="1"/>
+	</beans:bean>
+	
+	<!-- Tiles 설정 파일 -->
+	<beans:bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<beans:property name="definitions">
+			<beans:list>
+				<beans:value>/WEB-INF/tiles/tiles.xml</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<beans:constructor-arg ref="hikariConfig"/>
+	</beans:bean>
+	
+	<beans:bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+    <beans:property name="poolName" value="springHikariCP" />
+    <beans:property name="connectionTestQuery" value="SELECT 1" />
+    <beans:property name="dataSourceClassName" value="${hibernate.dataSourceClassName}" />
+    <beans:property name="maximumPoolSize" value="${hibernate.hikari.maximumPoolSize}" />
+    <beans:property name="idleTimeout" value="${hibernate.hikari.idleTimeout}" />
+
+    <beans:property name="dataSourceProperties">
+        <beans:props>
+            <beans:prop key="url">${dataSource.url}</beans:prop>
+            <beans:prop key="user">${dataSource.username}</beans:prop>
+            <beans:prop key="password">${dataSource.password}</beans:prop>
+        </beans:props>
+    </beans:property>
+	</beans:bean>
+	
+</beans:beans>
