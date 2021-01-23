@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 	
@@ -39,24 +41,29 @@
 		</beans:property>
 	</beans:bean>
 	
-	<!-- <beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-		<beans:constructor-arg ref="hikariConfig"/>
+	<!-- 2021.01.22 : HikariCP 설정 -->
+	<!-- hikariConfig는 valueObject 역할을 한다. -->
+	<beans:bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<beans:property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+		<beans:property name="jdbcUrl" value="jdbc:mysql://localhost:3307/board3?serverTimezone=UTC"/>
+		<beans:property name="username" value="root"/>
+		<beans:property name="password" value="koreait2020"/>
 	</beans:bean>
 	
-	<beans:bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-    <beans:property name="poolName" value="springHikariCP" />
-    <beans:property name="connectionTestQuery" value="SELECT 1" />
-    <beans:property name="dataSourceClassName" value="${hibernate.dataSourceClassName}" />
-    <beans:property name="maximumPoolSize" value="${hibernate.hikari.maximumPoolSize}" />
-    <beans:property name="idleTimeout" value="${hibernate.hikari.idleTimeout}" />
+	<!-- class에 명시된 클래스의 close메소드를 호출  -->
+	<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<!-- 스프링에서는 id값이 ref에 들어가야 한다. -->
+		<beans:constructor-arg ref="hikariConfig" />
+	</beans:bean>
+	
+	<!-- 2021.01.22 : mybatis 설정 -->
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource"/>
+		<!-- @Alias가 붙은 클래스들을 모두 찾는다. -->
+		<beans:property name="typeAliasesPackage" value="com.koreait.sboard"/>
+	</beans:bean>
+	
+	<mybatis-spring:scan base-package="com.koreait.sboard"/>
 
-    <beans:property name="dataSourceProperties">
-        <beans:props>
-            <beans:prop key="url">${dataSource.url}</beans:prop>
-            <beans:prop key="user">${dataSource.username}</beans:prop>
-            <beans:prop key="password">${dataSource.password}</beans:prop>
-        </beans:props>
-    </beans:property>
-	</beans:bean> -->
 	
 </beans:beans>

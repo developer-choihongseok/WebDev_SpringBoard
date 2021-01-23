@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 아래 한 줄이 없으면, SQL명령어 인식을 못한다!! -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.koreait.sboard.user.UserMapper">
+	<select id="selUserList" resultType="UserEntity">
+		SELECT * FROM t_user
+	</select>
+	
+	<!-- insert, update, delete : parameterType=""를 생략 할 수 있다. -->
+	<insert id="insUser" parameterType="UserEntity">
+		INSERT INTO t_user
+		(
+			user_id, user_pw, salt, nm, gender, ph
+		)
+		VALUES
+		(	
+			#{user_id}, #{user_pw}, '', #{nm}, #{gender}, #{ph}
+		)
+	</insert>
+	
+</mapper>

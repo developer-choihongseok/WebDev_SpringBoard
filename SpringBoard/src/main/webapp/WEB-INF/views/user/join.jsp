@@ -5,7 +5,7 @@
 
 <div>
 	<div>
-		<form action="/user/joinProc" method="post" id="joinfrm" onsubmit="return joinChk();">
+		<form id="joinfrm" action="/user/join" method="post" onsubmit="return joinChk();">
 			<div>
 				<input type="text" name="user_id" placeholder="아이디 입력" required="required" autofocus="autofocus">
 			</div>
