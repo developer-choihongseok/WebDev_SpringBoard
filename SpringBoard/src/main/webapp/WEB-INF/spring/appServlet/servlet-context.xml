@@ -32,6 +32,7 @@
 		<beans:property name="order" value="1"/>
 	</beans:bean>
 	
+	<!-- 2021.01.25 : Tiles3  설정 추가 -->
 	<!-- Tiles 설정 파일 -->
 	<beans:bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<beans:property name="definitions">
@@ -39,6 +40,9 @@
 				<beans:value>/WEB-INF/tiles/tiles.xml</beans:value>
 			</beans:list>
 		</beans:property>
+		<!--  tiles3 동적 메뉴 구성을 위한 설정 -->
+		<beans:property name="preparerFactoryClass"
+			value="org.springframework.web.servlet.view.tiles3.SpringBeanPreparerFactory"/>
 	</beans:bean>
 	
 	<!-- 2021.01.22 : HikariCP 설정 -->
@@ -52,15 +56,13 @@
 	
 	<!-- class에 명시된 클래스의 close메소드를 호출  -->
 	<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-		<!-- 스프링에서는 id값이 ref에 들어가야 한다. -->
-		<beans:constructor-arg ref="hikariConfig" />
+		<beans:constructor-arg ref="hikariConfig" />	<!-- 스프링에서는 id값이 ref에 들어가야 한다. -->
 	</beans:bean>
 	
 	<!-- 2021.01.22 : mybatis 설정 -->
 	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<beans:property name="dataSource" ref="dataSource"/>
-		<!-- @Alias가 붙은 클래스들을 모두 찾는다. -->
-		<beans:property name="typeAliasesPackage" value="com.koreait.sboard"/>
+		<beans:property name="typeAliasesPackage" value="com.koreait.sboard"/>	<!-- @Alias가 붙은 클래스들을 모두 찾는다. -->
 	</beans:bean>
 	
 	<mybatis-spring:scan base-package="com.koreait.sboard"/>

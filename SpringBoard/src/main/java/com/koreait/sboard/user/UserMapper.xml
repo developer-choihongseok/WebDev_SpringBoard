@@ -3,20 +3,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.koreait.sboard.user.UserMapper">
-	<select id="selUserList" resultType="UserEntity">
-		SELECT * FROM t_user
-	</select>
-	
-	<!-- insert, update, delete : parameterType=""를 생략 할 수 있다. -->
+	<!-- insert, update, delete : parameterType=""를 생략 할 수 있다. 
+	parameterType="" : 이 속성에 지정한 객체의 프로퍼티값이 SQL문의 입력 파라미터에 지정된다.-->
 	<insert id="insUser" parameterType="UserEntity">
 		INSERT INTO t_user
-		(
-			user_id, user_pw, salt, nm, gender, ph
-		)
+		( user_id, user_pw, salt, nm, gender, ph )
 		VALUES
-		(	
-			#{user_id}, #{user_pw}, '', #{nm}, #{gender}, #{ph}
-		)
+		( #{user_id}, #{user_pw}, #{salt}, #{nm}, #{gender}, #{ph} )
 	</insert>
+	
+	<!-- resultType : 클래스명 전체 또는 alias를 입력(즉, 매핑하려는 자바 클래스의 전체 경로를 입력) -->
+	<select id="selUser" resultType="UserEntity">
+		SELECT 
+			i_user, nm	<!-- session에 박아둘려고 필요한 값 -->
+			<if test="i_user > 0">
+				, user_id, ph, gender, profile_img	<!-- 마이페이지에서 필요. -->
+			</if>
+			<if test="user_id != null and user_id != ''">
+				, salt, user_pw	<!-- session에는 필요없는 값이라서 분리 시킨 것. -->
+			</if>
+		FROM t_user
+		<where>
+			<if test="i_user > 0">
+				i_user = ${i_user}
+			</if>
+			<if test="user_id != null and user_id != ''">
+				and user_id = #{user_id}
+			</if>
+		</where>
+	</select>
 	
 </mapper>

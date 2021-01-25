@@ -18,7 +18,6 @@
 			<div>
 				<input type="text" name="nm" placeholder="이름 입력" required="required">
 			</div>
-			<!-- 레이블로 묶으면, 라디오 버튼을 직접 클릭하지 않아도 클릭이 된다. -->
 			<div>
 				성별 :
 				<label>

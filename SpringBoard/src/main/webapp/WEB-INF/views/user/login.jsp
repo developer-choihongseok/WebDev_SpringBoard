@@ -3,10 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <h2>로그인</h2>
-	
+
 <div>
 	<div>
-		<form action="/user/loginProc" method="post">
+		<form action="/user/login" method="post">
 			<div>
 				<input type="text" name="user_id" placeholder="아이디를 입력하세요." value="${user_id }" autofocus="autofocus">
 			</div>
@@ -18,7 +18,7 @@
 			</div>
 		</form>
 			
-		<div style="color:red;">${msg }</div>	<!-- LoginSer.java의  msg -->
+		<div style="color:red;">${msg }</div>
 		
 		<a href="/user/join">회원가입</a>
 	</div>

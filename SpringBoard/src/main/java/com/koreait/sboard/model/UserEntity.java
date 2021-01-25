@@ -2,9 +2,7 @@ package com.koreait.sboard.model;
 
 import org.apache.ibatis.type.Alias;
 
-// 테이블과 1:1 매핑.
-// 클래스 명과 똑같이 하는게 헷갈리지 않는다.
-@Alias("UserEntity")
+@Alias("UserEntity")	// 클래스 명과 똑같이 하는게 헷갈리지 않는다.
 public class UserEntity {
 	// 필드 : 값 저장용
 	private int i_user;		// 회원 번호
