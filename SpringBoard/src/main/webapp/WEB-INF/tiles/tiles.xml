@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
-<!-- 2021.01.25 :  preparer="menuPreparer" 추가 -->
+<!-- 2021.01.25 :  preparer="빈 등록된 이름(=아이디)" 추가 -->
 <tiles-definitions>
+	<!-- (1) : 부모 역할 -->
 	<definition name="basic-template" template="/WEB-INF/views/temp/tiles_temp.jsp" preparer="menuPreparer">
+		<!-- value값이 name에 들어간다. -->
 		<put-attribute name="header" value="/WEB-INF/views/temp/header.jsp"/>
 	</definition>
 	
-	<!-- 핵심!! -> */* : 첫번째 주소값(폴더명)/두번째 주소값 -->
+	<!-- (1) -->
+	<!-- 핵심!! -> */* : 첫번째 주소값(폴더명)/두번째 주소값 
+	 			  /가 들어가면 파일명 체계가 된다(현재 2차) 
+	 			  */*는 /WEB-INF/views/temp/tiles_temp.jsp 이것이 열릴 것이다. -->
 	<definition name="*/*" extends="basic-template">
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"/>		
 	</definition>
 </tiles-definitions>
+
+<!-- 기본적인 템플릿을 생성한다. header, body, footer를 가진 tiles_temp.jsp라는 기본 레이아웃을 정의한다.
+이 정의된 레이아웃의 name 속성인 basic-template을 상속하여 추가적으로 여러 tiles들을 만들수 있다.
+
+definition의 template 속성에는 기본적으로 틀이 잡힐 레이아웃인 jsp이고, 그 안에 put-attribute를 넣는 방식.
+extends쪽 definition을 살펴보면, name에 매핑을 걸고 해당 매핑일 때, 참조될 jsp의 주소를 가리킨다. 
+-->

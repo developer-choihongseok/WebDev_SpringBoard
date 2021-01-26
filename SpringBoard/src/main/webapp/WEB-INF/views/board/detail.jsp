@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div>
-	<a href="/board/list.korea?typ=${data.typ }">게시판으로 돌아가기</a>
+	<a href="/board/list?typ=${data.typ }">게시판으로 돌아가기</a>
 	
 	<c:if test="${data.i_user == loginUser.i_user }">
 		<button onclick="clkDel(${data.i_board}, ${data.typ });">

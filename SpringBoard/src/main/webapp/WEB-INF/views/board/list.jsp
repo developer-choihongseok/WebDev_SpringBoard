@@ -5,16 +5,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <div>
-	<c:if test="${loginUser != null }">
+	<c:if test="${sessionScope.loginUser != null }">
 		<div>
-			<a href="/board/reg.korea?typ=${param.typ == null ? 1 : param.typ} ">
+			<a href="/board/reg?typ=${param.typ == null ? 1 : param.typ} ">
 				<button>글쓰기</button>
 			</a>
 		</div>
 	</c:if>
 	
 	<c:choose>
-		<c:when test="${fn:length(list) == 0 }">
+		<c:when test="${fn:length(requestScope.list) == 0 }">
 			<div>게시글이 없습니다.</div>
 		</c:when>
 		<c:otherwise>
@@ -30,7 +30,7 @@
 					</tr>
 				</thead>
 				<!-- list는 BoardController의 list 메서드에서 사용 -->
-				<c:forEach items="${list }" var="item">
+				<c:forEach items="${requestScope.list }" var="item">
 					<tr class="pointer" onclick="clkArticle(${item.i_board })">
 						<td align="center">${item.seq }</td>
 						<td align="center">${item.title }</td>

@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 	
-	<!-- 서블릿으로부터 주소값 매핑을 해준다. RequestMapping을 사용할 수 있게 한다 . 즉, 무조건 있어야 한다!! -->
+	<!-- 이 부분이 있어야 controller의 특별한 기능인 서블릿으로부터 주소값 매핑 역할을 가능하게 해준다. RequestMapping을 사용할 수 있게 한다 . 즉, 무조건 있어야 한다!! -->
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 	
@@ -24,12 +24,12 @@
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
-		<beans:property name="order" value="2"/>
+		<beans:property name="order" value="2"/>	<!-- 기존 ViewResolver의 우선순위(= 화면 구성)를 2번으로 지정. -->
 	</beans:bean>
 	
 	<beans:bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
-		<beans:property name="order" value="1"/>
+		<beans:property name="order" value="1"/>	<!-- Tiles3의 우선 순위(= 화면 구성)를 1번으로 지정(즉, tiles3를 가장 우선적으로 로드시킨다는 말.) -->
 	</beans:bean>
 	
 	<!-- 2021.01.25 : Tiles3  설정 추가 -->
@@ -40,7 +40,7 @@
 				<beans:value>/WEB-INF/tiles/tiles.xml</beans:value>
 			</beans:list>
 		</beans:property>
-		<!--  tiles3 동적 메뉴 구성을 위한 설정 -->
+		<!--  tiles3 동적 메뉴 구성을 위한 설정(= 화면이 이동할 때 마다 실행되게 하는 설정) -->
 		<beans:property name="preparerFactoryClass"
 			value="org.springframework.web.servlet.view.tiles3.SpringBeanPreparerFactory"/>
 	</beans:bean>
@@ -54,7 +54,7 @@
 		<beans:property name="password" value="koreait2020"/>
 	</beans:bean>
 	
-	<!-- class에 명시된 클래스의 close메소드를 호출  -->
+	<!-- class에 명시된 클래스의 close메소드를 호출  => rs.close()와 같은 기능 -->
 	<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<beans:constructor-arg ref="hikariConfig" />	<!-- 스프링에서는 id값이 ref에 들어가야 한다. -->
 	</beans:bean>
@@ -65,6 +65,7 @@
 		<beans:property name="typeAliasesPackage" value="com.koreait.sboard"/>	<!-- @Alias가 붙은 클래스들을 모두 찾는다. -->
 	</beans:bean>
 	
+	<!-- 위에 네임스페이스 부분에 등록되어 있어야한다. java에선 import -->
 	<mybatis-spring:scan base-package="com.koreait.sboard"/>
 
 	

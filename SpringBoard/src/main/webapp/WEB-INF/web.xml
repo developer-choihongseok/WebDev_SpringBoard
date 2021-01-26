@@ -20,6 +20,7 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
+			<!-- servlet-context.xml 설정파일로 servlet을 만들어준다. 설정을 바꾸려면 여기서 설정 -->
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
@@ -31,7 +32,7 @@
 	</servlet-mapping>
 	
 	<!-- 2021.01.21 추가 -->
-	<!-- 스프링에서의 한글 인코딩 설정 방법 -->
+	<!-- POST방식일 때, 스프링에서의 한글 인코딩 설정 방법 -->
 	<filter> 
     	<filter-name>encodingFilter</filter-name> 
     	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class> 
