@@ -40,10 +40,9 @@
 		<c:if test="${loginUser != null }">
 			<%-- 댓글 쓰는 부분 --%>
 			<div>
-				<form action="cmt/reg" method="post">
-					<input type="hidden" name="i_board" value="${data.i_board }">
-					댓글: <input type="text" name="ctnt">
-					<input type="submit" value="댓글쓰기"><br><br>
+				<form id="cmtFrm">
+					댓글: <input type="text" name="ctnt" data-id="${requestScope.data.i_board }">
+					<input type="button" name="btn" value="댓글쓰기"><br><br>
 				</form>
 			</div>
 		</c:if>

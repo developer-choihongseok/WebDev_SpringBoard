@@ -18,7 +18,9 @@ function chk() {
 // 삭제 버튼 클릭 -> fetch 사용(비동기 요청)
 function clkDel(i_board, typ){
 	if(confirm('삭제 하시겠습니까?')){
-		fetch(`/board/del/${i_board}`)
+		fetch(`/board/del/${i_board}`,{
+			method: 'delete'	// get방식이랑 비슷함, put이 post방식이랑 비슷하다.
+		})
 		.then(function(res){
 			return res.json();	// 꼭 적어줘야 한다!!
 		}).then(function(myJson){
@@ -60,7 +62,7 @@ function clkCmtClose(i_cmt){
 
 // 좋아요 버튼 클릭 -> Ajax 사용
 // 자바스크립트에서 함수도 객체로 보기(즉, 주소값을 갖고 있다!!)
-function toggleFavorite(i_board){
+function toggleFavorite (i_board){
 	/*console.log('toggleFavorite called');*/
 	var fc = document.querySelector('#favoriteContainer');
 	// 1: 좋아요	0: 안 좋아요
@@ -76,19 +78,68 @@ function toggleFavorite(i_board){
 			'state': state,	// Key : Value
 			'i_board': i_board
 		}
-	}).then(function(res){	// 통신 성공,	then을 쓸 수 있는 건 promise 객체여서 쓸 수 있다.
+	}).then(function (res){	// 통신 성공,	then을 쓸 수 있는 건 promise 객체여서 쓸 수 있다.
 		console.log(res);
 		
 		if(res.data.result == 1){	// res에 있는 data객체에 접근 후, result 값 가져오기.
 			var iconClass = state == 1 ? 'fas' : 'far';
 			fc.innerHTML = `<i class="${iconClass} fa-thumbs-up"></i>`;	// 기존에 있던 태그는 모두 지우고, 바꿔치기.
-			fc.setAttribute('is_favorite', state);	// 반대 값이 들어간다.
+			fc.setAttribute('is_favorite', state)	// 반대 값이 들어간다.
 		}else{
-			alert('에러가 발생하였습니다.');
+			alert('에러가 발생하였습니다.')
 		}
 	}).catch(function(err){	// 통신 실패
-		console.err('에러 발생: ' + err);
+		console.err('에러 발생: ' + err)
 	});
 	
 	/*console.log(fc.getAttribute('is_favorite'));*/
 }
+
+// 댓글쓰기 - ajax 이용
+// Standard JS 표준 : == 사용하지 않기, 함수 만들 때 띄우고, 호출할 때 붙이기, ; 빼기
+var cmtFrmElem = document.querySelector('#cmtFrm')
+
+if(cmtFrmElem){
+	var ctntElem = cmtFrmElem.ctnt	// detail.jsp에서 44번째줄을 뜻한다.
+	var i_board = ctntElem.dataset.id
+	var btnElem = cmtFrmElem.btn	// detail.jsp에서 45번째줄을 뜻한다.
+	
+	btnElem.addEventListener('click', ajax)
+	
+	// 여기까지 한번만 실행
+	function ajax(){
+		
+		var param = {
+			i_board,	// 키 값이랑 value값이 같으면 생략이 가능.
+			ctnt: ctntElem.value
+		}
+		
+		console.log(param)
+		
+		fetch('/board/insCmt', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(param)	// 객체를 문자열(JSON)로 바꿔준다.
+		}).then(function(res){	// 성공하면 res에 값이 들어간다.
+			return res.json()	// promise를 리턴한다!!
+		}).then(function(myJson){	// myJson : 서버에서 보낸 값.
+			console.log(myJson)
+		})
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

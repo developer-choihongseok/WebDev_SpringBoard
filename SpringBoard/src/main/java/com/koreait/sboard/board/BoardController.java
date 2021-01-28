@@ -8,12 +8,16 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.koreait.sboard.common.Const;
 import com.koreait.sboard.common.SecurityUtils;
+import com.koreait.sboard.model.BoardCmtEntity;
 import com.koreait.sboard.model.BoardDTO;
 import com.koreait.sboard.model.BoardEntity;
 
@@ -29,11 +33,11 @@ public class BoardController {
 	
 	@GetMapping("/list")
 	public void list(Model model, BoardDTO param){
-		model.addAttribute("list", service.selBoardList(param));
+		model.addAttribute(Const.KEY_LIST, service.selBoardList(param));
 	}
 	
 	@GetMapping("/reg")
-	public String reg() {
+	public String reg() {	// 화면만 뿌리면 되므로, Model 필요 X.
 		return "board/regmod";
 	}
 	
@@ -50,15 +54,13 @@ public class BoardController {
 	public void detail(BoardDTO param, HttpSession hs, Model model) {
 		param.setI_user(SecurityUtils.getLoginUserPK(hs));
 		
-		model.addAttribute("data", service.selBoard(param));
+		model.addAttribute(Const.KEY_DATA, service.selBoard(param));
 	}
 	
-	// RESTful : 주소값으로 더 보낼수 있다.
 	@ResponseBody
-	@GetMapping("/del/{i_board}")
+	@DeleteMapping("/del/{i_board}")
 	public Map<String, Object> del(BoardDTO param, HttpSession hs) {
 		System.out.println("i_board: " + param.getI_board());
-		
 		param.setI_user(SecurityUtils.getLoginUserPK(hs));
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -67,4 +69,34 @@ public class BoardController {
 		
 		return map;
 	}
+	
+	@GetMapping("/mod")
+	public String mod(BoardDTO param, Model model) {
+		model.addAttribute(Const.KEY_DATA, service.selBoard(param));
+		return "board/regmod";
+	}
+	
+	@PostMapping("/mod")
+	public String mod(BoardEntity param, HttpSession hs) {
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));	// 보안 처리를 해주면 아무나 수정 등을 X.
+		service.updateBoard(param);
+		return "redirect:/board/detail?i_board=" + param.getI_board();
+	}
+	
+	// ---------------------------- Cmt ---------------------------- 
+	
+	@ResponseBody
+	@PostMapping("/insCmt")
+	public Map<String, Object> insCmt(@RequestBody BoardCmtEntity param, HttpSession hs){
+		System.out.println("i_board : " + param.getI_board());
+		System.out.println("ctnt: " + param.getCtnt());
+		
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		
+		Map<String, Object> returnValue = new HashMap<String, Object>();
+		returnValue.put(Const.KEY_RESULT, service.insertCmt(param));
+		
+		return returnValue;
+	}
+	
 }

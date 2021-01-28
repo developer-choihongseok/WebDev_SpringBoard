@@ -11,13 +11,13 @@ import com.koreait.sboard.model.UserEntity;
   		    그러므로, 완전히 다른 결과가 나오게 된다!
 */
 public class SecurityUtils {
-	// true : 로그인 된 상태,	false : 로그아웃 된 상태
+	// true : 로그인 된 상태,	 false : 로그아웃 된 상태
 	public static boolean isLogin(HttpSession hs) {
 		return getLoginUser(hs) != null;
 	}
 		
 	public static UserEntity getLoginUser(HttpSession hs) {
-		return (UserEntity)hs.getAttribute(Const.LOGINUSER);
+		return (UserEntity)hs.getAttribute(Const.KEY_LOGINUSER);
 	}
 	
 	// 실제로 수정, 삭제 할 때 자주 쓰인다!! -> 만들어 놓으면 편하다.
@@ -25,7 +25,7 @@ public class SecurityUtils {
 	public static int getLoginUserPK(HttpSession hs) {
 		UserEntity loginUser = getLoginUser(hs);
 		
-		return loginUser == null ? 0 : loginUser.getI_user();
+		return loginUser == null ? -1 : loginUser.getI_user();
 	}
 	
 	public static String gensalt() {

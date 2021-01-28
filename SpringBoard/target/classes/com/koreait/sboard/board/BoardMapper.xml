@@ -53,13 +53,29 @@
 		WHERE A.i_board = #{i_board}
 	</select>
 	
-	<update id="updateBoard" parameterType="BoardEntity">
-		
+	<update id="updateBoard">
+		UPDATE t_board
+		SET title = #{title}
+		, ctnt = #{ctnt}
+		WHERE i_board = #{i_board}
+		AND i_user = #{i_user}
 	</update>
 	
-	<delete id="deleteBoard" parameterType="BoardDTO">
+	<update id="updateBoardHits">
+		UPDATE t_board
+		SET hits = hits + 1
+		WHERE i_board = #{i_board}
+	</update>
+	
+	<delete id="deleteBoard">
 		DELETE FROM t_board
 		WHERE i_board = #{i_board}
 		AND i_user = #{i_user}
 	</delete>
+	
+	<insert id="insertCmt" useGeneratedKeys="true" keyProperty="i_cmt">
+		INSERT INTO t_board_cmt
+		(i_board, i_user, ctnt)
+		VALUES(#{i_board}, #{i_user}, #{ctnt})
+	</insert>
 </mapper>
