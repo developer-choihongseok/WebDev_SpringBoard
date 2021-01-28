@@ -33,7 +33,7 @@
 				<c:forEach items="${requestScope.list }" var="item">
 					<tr class="pointer" onclick="clkArticle(${item.i_board })">
 						<td align="center">${item.seq }</td>
-						<td align="center">${item.title }</td>
+						<td align="center">${fn:length(item.title) > 12 ? fn:substring(item.title, 0, 11) += '...' : item.title }</td>
 						<td align="center">${item.hits }</td>
 						<td align="center">${item.r_dt }</td>
 						<td class="profile-td" align="center">
@@ -61,7 +61,7 @@
 		<%-- 1부터 ${pageCnt }까지 자연수를 순차적으로 출력함. --%>
 		<c:forEach begin="1" end="${pageCnt }" var="i">
 			<span>
-				<a href="/list?typ=${typ }&page=${i }">${i }</a>
+				<a href="list?typ=${typ }&page=${i }">${i }</a>
 			</span>
 		</c:forEach>
 	</div>

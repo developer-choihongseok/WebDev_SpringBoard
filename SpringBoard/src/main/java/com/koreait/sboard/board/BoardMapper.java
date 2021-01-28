@@ -10,10 +10,9 @@ import com.koreait.sboard.model.BoardEntity;
 
 @Mapper
 public interface BoardMapper {
-	
-	List<BoardDomain> selBoardList(BoardDTO param);
-	BoardEntity selBoard(BoardEntity param);
 	int insertBoard(BoardEntity param);
+	List<BoardDomain> selBoardList(BoardDTO param);
+	BoardDomain selBoard(BoardDTO param);
+	int deleteBoard(BoardDTO param);
 	int updateBoard(BoardEntity param);
-	int deleteBoard(BoardEntity param);
 }

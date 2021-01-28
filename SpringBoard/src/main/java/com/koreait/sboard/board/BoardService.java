@@ -19,11 +19,12 @@ public class BoardService {
 		if(param.getTyp() == 0) {
 			param.setTyp(1);
 		}
-		
 		return mapper.selBoardList(param);
 	}
 	
-	public BoardEntity selBoard(BoardEntity param) {
+	public BoardDomain selBoard(BoardDTO param) {
+		// 조회 수
+		
 		return mapper.selBoard(param);
 	}
 	
@@ -35,7 +36,7 @@ public class BoardService {
 		return mapper.updateBoard(param);
 	}
 	
-	public int deleteBoard(BoardEntity param) {
+	public int deleteBoard(BoardDTO param) {
 		return mapper.deleteBoard(param);
 	}
 }

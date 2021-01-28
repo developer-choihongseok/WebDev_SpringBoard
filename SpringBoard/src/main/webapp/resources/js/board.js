@@ -2,7 +2,7 @@
 
 // 글 번호 클릭 시, 해당 url로 이동
 function clkArticle(i_board) {
-	var url = `/board/detail.korea?i_board=${i_board}`; 
+	var url = `/board/detail?i_board=${i_board}`; 
 	location.href = url;	// 주소값 이동
 }
 
@@ -15,10 +15,21 @@ function chk() {
 	}
 }
 
-// 삭제 버튼 클릭
+// 삭제 버튼 클릭 -> fetch 사용(비동기 요청)
 function clkDel(i_board, typ){
 	if(confirm('삭제 하시겠습니까?')){
-		location.href = `del?i_board=${i_board}&typ=${typ}`;
+		fetch(`/board/del/${i_board}`)
+		.then(function(res){
+			return res.json();	// 꼭 적어줘야 한다!!
+		}).then(function(myJson){
+			console.log(myJson);
+			
+			if(myJson.result === 1){	// 삭제 완료
+				location.href = `/board/list?typ=${typ}`;
+			}else{	// 삭제 실패
+				alert("삭제 실패하였습니다.");
+			}
+		});
 	}
 }
 
@@ -47,7 +58,7 @@ function clkCmtClose(i_cmt){
 	console.log(trForm);
 }
 
-// 좋아요 버튼 클릭
+// 좋아요 버튼 클릭 -> Ajax 사용
 // 자바스크립트에서 함수도 객체로 보기(즉, 주소값을 갖고 있다!!)
 function toggleFavorite(i_board){
 	/*console.log('toggleFavorite called');*/
