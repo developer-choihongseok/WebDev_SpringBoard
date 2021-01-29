@@ -37,62 +37,22 @@
 	</div>
 	
 	<div style="margin-top: 20px;">
+		<span id="i_board" data-id="${requestScope.data.i_board }"></span>
+		
 		<c:if test="${loginUser != null }">
 			<%-- 댓글 쓰는 부분 --%>
 			<div>
 				<form id="cmtFrm">
-					댓글: <input type="text" name="ctnt" data-id="${requestScope.data.i_board }">
+					댓글: <input type="text" name="ctnt">
 					<input type="button" name="btn" value="댓글쓰기"><br><br>
 				</form>
 			</div>
 		</c:if>
-		
-		<%-- 댓글 리스트 --%>
-		<div style="margin-top: 10px;">
-			<strong>댓글 목록</strong><br>
-			
-			<c:if test="${fn:length(requestScope.cmtList) > 0 }">
-				<table border="1">
-					<tr>
-						<th width="170">댓글</th>
-						<th width="100">작성자</th>
-						<th width="170">작성일</th>
-						<th width="120">비고</th>		
-					</tr>
-					<c:forEach items="${cmtList }" var="item">	<!-- BoardService.java의 cmtList -->
-						<tr>
-							<td align="center" bgcolor="#ffeaa7">${item.ctnt }</td>
-							<td align="center" bgcolor="#3498db">${item.user_nm }</td>
-							<td align="center" bgcolor="#95a5a6">${item.r_dt }</td>
-							<td align="center" bgcolor="#e84393">
-								<c:if test="${item.i_user == loginUser.i_user }">
-									<button onclick="clkCmtDel(${item.i_cmt}, ${data.i_board });">삭제</button>
-							<%--	<a href="cmt/del?i_cmt=${item.i_cmt }&i_board=${data.i_board}">
-										<button>삭제</button>
-									</a> 	--%> 
-									<button onclick="clkCmtMod(${item.i_cmt});">수정</button>
-								</c:if>
-							</td>
-						</tr>
-						<c:if test="${item.i_user == loginUser.i_user }">
-							<tr id="mod_${item.i_cmt }" class="cmd_mod_form">
-								<td colspan="4">
-									<form action="cmt/mod" method="post">
-										<input type="hidden" name="i_board" value="${data.i_board }">
-										<input type="hidden" name="i_cmt" value="${item.i_cmt }">
-										<input type="text" name="ctnt" value="${item.ctnt }">
-										<input type="submit" value="수정">
-								<!--	<input type="button" value="닫기" onclick="clkCmtClose(${item.i_cmt});"> -->
-										<!-- 버튼은 기본 타입이 submit이다. 따라서, button을 줘야한다. -->
-										<button type="button" onclick="clkCmtClose(${item.i_cmt});">닫기</button>
-									</form>
-								</td>
-							</tr>
-						</c:if>
-					</c:forEach>
-				</table>
-			</c:if>
-		</div>
+
+		<strong>댓글 목록</strong><br>
+				
+		<div id="cmtList"></div>
+
 	</div>
 	
 	<c:if test="${loginUser != null }">

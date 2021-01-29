@@ -1,6 +1,7 @@
 package com.koreait.sboard.board;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreait.sboard.common.Const;
 import com.koreait.sboard.common.SecurityUtils;
+import com.koreait.sboard.model.BoardCmtDomain;
 import com.koreait.sboard.model.BoardCmtEntity;
 import com.koreait.sboard.model.BoardDTO;
 import com.koreait.sboard.model.BoardEntity;
@@ -85,6 +88,8 @@ public class BoardController {
 	
 	// ---------------------------- Cmt ---------------------------- 
 	
+	// @ResponseBody : JSON형태로 받을려면 꼭 이걸 써주어야 한다!!
+	// @RequestBody : 받는 문자열이 JSON 형태라는것을 알려줘서, 알아서 문자열을 해석한다.
 	@ResponseBody
 	@PostMapping("/insCmt")
 	public Map<String, Object> insCmt(@RequestBody BoardCmtEntity param, HttpSession hs){
@@ -97,6 +102,12 @@ public class BoardController {
 		returnValue.put(Const.KEY_RESULT, service.insertCmt(param));
 		
 		return returnValue;
+	}
+	
+	@ResponseBody
+	@GetMapping("/cmtList")
+	public List<BoardCmtDomain> selCmtList(@RequestParam int i_board){
+		return service.selCmtList(i_board);
 	}
 	
 }

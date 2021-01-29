@@ -95,22 +95,88 @@ function toggleFavorite (i_board){
 	/*console.log(fc.getAttribute('is_favorite'));*/
 }
 
-// 댓글쓰기 - ajax 이용
+var cmtObj = {
+		createCmtTable: function(){
+			var tableElem = document.createElement('table')
+			tableElem.innerHTML = 
+			`<tr>
+				<th>댓글</th>
+				<th>작성자</th>
+				<th>작성일</th>
+				<th>비고</th>
+			</tr>`
+		
+			return tableElem
+		},
+	
+		// 댓글 리스트 가져오기
+		getCmtList: function(i_board){
+			fetch(`/board/cmtList?i_board=${i_board}`)
+				.then(function(res){
+					return res.json()
+			})
+			.then((list) => {
+				this.proc(list)
+			})
+		},
+		
+		createRecode: function(item) {
+		
+		},
+		
+		proc: function(list) {
+			var table = this.createCmtTable()
+
+			console.log(list)
+		}
+}
+
+var cmtListElem = document.querySelector('#cmtList')
+
+if(cmtListElem) {
+	var i_board = document.querySelector('#i_board').dataset.id
+	cmtObj.getCmtList(i_board)
+}
+
+// 댓글 달기 - ajax 이용
 // Standard JS 표준 : == 사용하지 않기, 함수 만들 때 띄우고, 호출할 때 붙이기, ; 빼기
-var cmtFrmElem = document.querySelector('#cmtFrm')
+var cmtFrmElem = document.querySelector('#cmtFrm')	// form을 가리킨다.
 
 if(cmtFrmElem){
-	var ctntElem = cmtFrmElem.ctnt	// detail.jsp에서 44번째줄을 뜻한다.
-	var i_board = ctntElem.dataset.id
+	// Enter를 눌렀을 때 submit이 안되게 하는 1번째 방법
+	/*
+	cmtFrmElem.onsubmit = function(){
+		return false
+	}
+	*/
+	
+	// Enter를 눌렀을 때 submit이 안되게 하는 2번째 방법
+	cmtFrmElem.onsubmit = function(e){
+		e.preventDefault()
+	}
+	
+	// 115~128번째 줄은 한번만 실행된다!!
+	var ctntElem = cmtFrmElem.ctnt	// detail.jsp에서 44번째줄을 뜻한다. 
+	var i_board = document.querySelector('#i_board').dataset.id	// dataset : data-에 접근하는 것을 가리킨다.
 	var btnElem = cmtFrmElem.btn	// detail.jsp에서 45번째줄을 뜻한다.
 	
-	btnElem.addEventListener('click', ajax)
+	// Enter 눌렀을 때 submit 버튼을 누른거랑 똑같은 효과.
+	ctntElem.onkeyup = function(e){
+		if(e.keyCode === 13){	// 13 : Entity
+			ajax()
+		}
+	}
 	
-	// 여기까지 한번만 실행
+	btnElem.addEventListener('click', ajax)	// 버튼 눌렀을 때 실행시키고 싶은 함수명 : ajax 라는 이름.
+	
 	function ajax(){
 		
+		if(ctntElem.value === ''){
+			return
+		}
+		
 		var param = {
-			i_board,	// 키 값이랑 value값이 같으면 생략이 가능.
+			i_board: i_board,	// 키 값이랑 value값이 같으면 생략이 가능.
 			ctnt: ctntElem.value
 		}
 		
@@ -124,11 +190,24 @@ if(cmtFrmElem){
 			body: JSON.stringify(param)	// 객체를 문자열(JSON)로 바꿔준다.
 		}).then(function(res){	// 성공하면 res에 값이 들어간다.
 			return res.json()	// promise를 리턴한다!!
-		}).then(function(myJson){	// myJson : 서버에서 보낸 값.
-			console.log(myJson)
+		}).then(function(data){	// myJson : 서버에서 보낸 값.
+			proc(data)	// 성공하면 1값을 받을 것이다.
 		})
 	}
+	
+	function proc(data){
+		switch(data.result){
+			case 0:
+				alert('댓글 작성 실패하였습니다.')
+			return
+			case 1:
+				ctntElem.value = ''
+			return
+		}
+	}
 }
+
+
 
 
 

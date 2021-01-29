@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.koreait.sboard.model.BoardCmtDomain;
 import com.koreait.sboard.model.BoardCmtEntity;
 import com.koreait.sboard.model.BoardDTO;
 import com.koreait.sboard.model.BoardDomain;
@@ -40,7 +41,15 @@ public class BoardService {
 		return mapper.deleteBoard(param);
 	}
 	
+	// ---------------------------- Cmt ---------------------------- 
+	
 	public int insertCmt(BoardCmtEntity param) {
-		return mapper.insertCmt(param);
+		return mapper.insertCmt(param);	// 결과 값은 1 아니면 0.
 	}
+	
+	public List<BoardCmtDomain> selCmtList(int i_board) {
+		return mapper.selCmtList(i_board);
+	}
+	
+	
 }
