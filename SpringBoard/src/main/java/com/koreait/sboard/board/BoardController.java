@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreait.sboard.common.Const;
@@ -46,7 +45,7 @@ public class BoardController {
 	
 	@PostMapping("/reg")
 	public String reg(BoardEntity param, HttpSession hs) {
-		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));	// 보안 처리를 해주면 아무나 등록,수정 등을 X.
 		
 		service.insertBoard(param);
 		
@@ -81,15 +80,15 @@ public class BoardController {
 	
 	@PostMapping("/mod")
 	public String mod(BoardEntity param, HttpSession hs) {
-		param.setI_user(SecurityUtils.getLoginUserPK(hs));	// 보안 처리를 해주면 아무나 수정 등을 X.
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));	// 보안 처리를 해주면 아무나 등록,수정 등을 X.
 		service.updateBoard(param);
 		return "redirect:/board/detail?i_board=" + param.getI_board();
 	}
 	
 	// ---------------------------- Cmt ---------------------------- 
 	
-	// @ResponseBody : JSON형태로 받을려면 꼭 이걸 써주어야 한다!!
-	// @RequestBody : 받는 문자열이 JSON 형태라는것을 알려줘서, 알아서 문자열을 해석한다.
+	// @ResponseBody : 요청한 형태에 맞춰서 메시지 변환기를 통해 결과값을 반환한다. @RequestBody가 선택한 형식으로 결과값을 변환하여 반환한다고 보면 된다.
+	// @RequestBody : HTTP 요청 본문에 담긴 값들을 자바 객체로 변환 시켜, 객체에 저장시킨다.
 	@ResponseBody
 	@PostMapping("/insCmt")
 	public Map<String, Object> insCmt(@RequestBody BoardCmtEntity param, HttpSession hs){
@@ -106,8 +105,21 @@ public class BoardController {
 	
 	@ResponseBody
 	@GetMapping("/cmtList")
-	public List<BoardCmtDomain> selCmtList(@RequestParam int i_board){
-		return service.selCmtList(i_board);
+	public List<BoardCmtDomain> selCmtList(BoardCmtEntity param, HttpSession hs){
+		System.out.println("i_board : " + param.getI_board());
+		
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		return service.selCmtList(param);
+	}
+	
+	@ResponseBody
+	@DeleteMapping("/delCmt")
+	public Map<String, Object> delCmt(BoardCmtEntity param, HttpSession hs){
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		Map<String, Object> returnValue = new HashMap<String, Object>();
+		
+		returnValue.put(Const.KEY_RESULT, service.deleteCmt(param));
+		return returnValue;
 	}
 	
 }

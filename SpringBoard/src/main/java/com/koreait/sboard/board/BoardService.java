@@ -47,9 +47,11 @@ public class BoardService {
 		return mapper.insertCmt(param);	// 결과 값은 1 아니면 0.
 	}
 	
-	public List<BoardCmtDomain> selCmtList(int i_board) {
-		return mapper.selCmtList(i_board);
+	public List<BoardCmtDomain> selCmtList(BoardCmtEntity param) {
+		return mapper.selCmtList(param);
 	}
 	
-	
+	public int deleteCmt(BoardCmtEntity param) {
+		return mapper.deleteCmt(param);
+	}
 }

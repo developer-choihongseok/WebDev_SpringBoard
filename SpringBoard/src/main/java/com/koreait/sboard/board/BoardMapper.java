@@ -23,5 +23,6 @@ public interface BoardMapper {
 	// ---------------------------- Cmt ---------------------------- 
 	
 	int insertCmt(BoardCmtEntity param);	// 객체를 보냈기 때문에, 값을 맞춰줘야 한다.
-	List<BoardCmtDomain> selCmtList(int param);	// int를 보내기 때문에 BoardMapper.xml에서 i_board 값을 아무거나 주면 된다.
+	List<BoardCmtDomain> selCmtList(BoardCmtEntity param);	// int를 보내기 때문에 BoardMapper.xml에서 i_board 값을 아무거나 주면 된다.
+	int deleteCmt(BoardCmtEntity param);
 }

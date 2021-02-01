@@ -37,4 +37,11 @@ public class UserController {
 		service.insUser(param);
 		return "redirect:/user/login";	// 스프링에서 sendRedirect 하는 방법.
 	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession hs) {
+		hs.invalidate();
+		
+		return "redirect:/user/login";
+	}
 }

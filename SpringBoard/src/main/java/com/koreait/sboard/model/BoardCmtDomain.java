@@ -7,6 +7,7 @@ public class BoardCmtDomain extends BoardCmtEntity{
 	
 	private String user_nm;
 	private String user_img;
+	private int is_mycmt;
 	
 	public String getUser_nm() {
 		return user_nm;
@@ -19,5 +20,11 @@ public class BoardCmtDomain extends BoardCmtEntity{
 	}
 	public void setUser_img(String user_img) {
 		this.user_img = user_img;
+	}
+	public int getIs_mycmt() {
+		return is_mycmt;
+	}
+	public void setIs_mycmt(int is_mycmt) {
+		this.is_mycmt = is_mycmt;
 	}
 }

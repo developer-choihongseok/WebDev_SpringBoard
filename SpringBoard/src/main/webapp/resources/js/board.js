@@ -95,47 +95,129 @@ function toggleFavorite (i_board){
 	/*console.log(fc.getAttribute('is_favorite'));*/
 }
 
-var cmtObj = {
-		createCmtTable: function(){
-			var tableElem = document.createElement('table')
-			tableElem.innerHTML = 
-			`<tr>
-				<th>댓글</th>
-				<th>작성자</th>
-				<th>작성일</th>
-				<th>비고</th>
-			</tr>`
-		
-			return tableElem
-		},
-	
-		// 댓글 리스트 가져오기
-		getCmtList: function(i_board){
-			fetch(`/board/cmtList?i_board=${i_board}`)
-				.then(function(res){
-					return res.json()
-			})
-			.then((list) => {
-				this.proc(list)
-			})
-		},
-		
-		createRecode: function(item) {
-		
-		},
-		
-		proc: function(list) {
-			var table = this.createCmtTable()
+// 모달창 열기 닫기
+function openCloseCmtModal(state){
+	var modalWrapElem = document.querySelector('.modal_wrap')
+	var blackBgElem = document.querySelector('.black_bg')
 
-			console.log(list)
-		}
+	modalWrapElem.style.display = state
+	blackBgElem.style.display = state
 }
 
+// 댓글 수정
+function modCmt(i_cmt, ctnt){
+	openCloseCmtModal('block')
+	
+	var cmtCtntElem = document.querySelector('.modal_wrap #cmtCtnt')
+	var cmtModBtn = document.querySelector('.modal_wrap #cmtModBtn')
+	
+	cmtCtntElem.value = ctnt
+}
+
+// 댓글 삭제
+function delCmt(i_cmt){
+	if(!confirm('삭제하시겠습니까?')){
+		return
+	}
+	
+	fetch(`/board/delCmt?i_cmt=${i_cmt}`,{
+		method: 'delete'
+	}).then(function(res){
+		return res.json()
+	}).then(function(myJson){
+		switch(myJson.result){
+			case 1:
+				cmtObj.getCmtList()
+			return
+			case 0:
+				alert('댓글 삭제 실패')
+			return
+		}
+	})
+}
+
+// cmtObj : 객체
+var cmtObj = {
+	i_board: 0,
+	createCmtTable: function(){
+		var tableElem = document.createElement('table')
+		tableElem.innerHTML = 
+		`<tr>
+			<th>댓글</th>
+			<th>작성자</th>
+			<th>작성일</th>
+			<th>비고</th>
+		</tr>`
+		
+		return tableElem
+	},
+	
+	// 댓글 리스트 가져오기
+	// fetch로 ajax통신 하고 있다.
+	getCmtList: function(){
+		if(this.i_board === 0){
+			return
+		}
+			
+		fetch(`/board/cmtList?i_board=${this.i_board}`)
+			.then(function(res){
+				return res.json()
+		})
+		.then((list) => {
+			cmtListElem.innerHTML = ''
+			this.proc(list)
+		})
+	},
+		
+	proc: function(list) {
+		if(list.length == 0){
+			return 
+		}
+			
+		var table = this.createCmtTable()
+			
+		for(var i = 0; i < list.length; i++){
+			var recode = this.createRecode(list[i])
+			table.append(recode)
+		}
+		cmtListElem.append(table)
+			
+		console.log(list)	// 배열 형태.
+	},
+		
+	createRecode: function(item) {
+		var etc = ''
+		if(item.is_mycmt === 1){
+			etc = `<button onclick="modCmt(${item.i_cmt}, '${item.ctnt}')">수정</button>
+			<button onclick="delCmt(${item.i_cmt})">삭제</button>`
+		}
+			
+		var tr = document.createElement('tr')
+		
+		tr.innerHTML = `
+			<td>${item.ctnt}</td>
+			<td>${item.user_nm}</td>
+			<td>${item.r_dt}</td>
+			<td>${etc}</td>
+		`
+		return tr
+	}
+}
+
+// 댓글 리스트
 var cmtListElem = document.querySelector('#cmtList')
 
 if(cmtListElem) {
+	// 모달창 닫기 버튼
+	var modalCloseElem = document.querySelector('.modal_close')
+	
+	modalCloseElem.addEventListener('click', function(){
+		openCloseCmtModal('none')
+	})
+	
 	var i_board = document.querySelector('#i_board').dataset.id
-	cmtObj.getCmtList(i_board)
+	cmtObj.i_board = i_board
+	cmtObj.getCmtList()
 }
 
 // 댓글 달기 - ajax 이용
@@ -159,6 +241,7 @@ if(cmtFrmElem){
 	var ctntElem = cmtFrmElem.ctnt	// detail.jsp에서 44번째줄을 뜻한다. 
 	var i_board = document.querySelector('#i_board').dataset.id	// dataset : data-에 접근하는 것을 가리킨다.
 	var btnElem = cmtFrmElem.btn	// detail.jsp에서 45번째줄을 뜻한다.
+	cmtObj.i_board = i_board
 	
 	// Enter 눌렀을 때 submit 버튼을 누른거랑 똑같은 효과.
 	ctntElem.onkeyup = function(e){
@@ -202,6 +285,7 @@ if(cmtFrmElem){
 			return
 			case 1:
 				ctntElem.value = ''
+				cmtObj.getCmtList()
 			return
 		}
 	}

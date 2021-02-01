@@ -54,12 +54,12 @@
 		<beans:property name="password" value="koreait2020"/>
 	</beans:bean>
 	
-	<!-- class에 명시된 클래스의 close메소드를 호출  => rs.close()와 같은 기능 -->
+	<!-- HikariDataSource 객체가 삭제되기 전에 연결을 해제하고자 close() 메서드를 destroy-method 속성으로 지정 -->
 	<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-		<beans:constructor-arg ref="hikariConfig" />	<!-- 스프링에서는 id값이 ref에 들어가야 한다. -->
+		<beans:constructor-arg ref="hikariConfig" />	<!-- dataSource 객체에 hikariConfig 객체 의존성 주입, 스프링에서는 id값이 ref에 들어가야 한다. -->
 	</beans:bean>
 	
-	<!-- 2021.01.22 : mybatis 설정 -->
+	<!-- 2021.01.22 : mybatis 핵심 객체 sqlSessionFactory bean 등록 설정 -->
 	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<beans:property name="dataSource" ref="dataSource"/>
 		<beans:property name="typeAliasesPackage" value="com.koreait.sboard"/>	<!-- @Alias가 붙은 클래스들을 모두 찾는다. -->
