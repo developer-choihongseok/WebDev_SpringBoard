@@ -37,6 +37,7 @@
 	</div>
 	
 	<div style="margin-top: 20px;">
+		<!-- HTML의 사용자 지정 특성 이름은 data-로 시작한다.  -->
 		<span id="i_board" data-id="${requestScope.data.i_board }"></span>
 		
 		<c:if test="${loginUser != null }">

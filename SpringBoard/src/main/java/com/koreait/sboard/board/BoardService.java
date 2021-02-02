@@ -51,6 +51,10 @@ public class BoardService {
 		return mapper.selCmtList(param);
 	}
 	
+	public int updateCmt(BoardCmtEntity param) {
+		return mapper.updateCmt(param);
+	}
+	
 	public int deleteCmt(BoardCmtEntity param) {
 		return mapper.deleteCmt(param);
 	}

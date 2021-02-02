@@ -35,4 +35,14 @@ public class SecurityUtils {
 	public static String hashPassword(String pw, String salt) {
 		return BCrypt.hashpw(pw, salt);
 	}
+	
+	// 인증메일을 받기 위한 랜덤한 숫자 생성.
+	public static String getPrivateCode(int length) {
+		String str = "";
+		
+		for (int i = 0; i < length; i++) {
+			str += (int)(Math.random() * 10);
+		}
+		return str;
+	}
 }

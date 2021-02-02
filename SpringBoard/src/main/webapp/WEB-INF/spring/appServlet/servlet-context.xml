@@ -62,7 +62,7 @@
 	<!-- 2021.01.22 : mybatis 핵심 객체 sqlSessionFactory bean 등록 설정 -->
 	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<beans:property name="dataSource" ref="dataSource"/>
-		<beans:property name="typeAliasesPackage" value="com.koreait.sboard"/>	<!-- @Alias가 붙은 클래스들을 모두 찾는다. -->
+		<beans:property name="typeAliasesPackage" value="com.koreait.sboard"/>	<!-- @Alias를 안 쓰기 위해서 적었다. -->
 	</beans:bean>
 	
 	<!-- 위에 네임스페이스 부분에 등록되어 있어야한다. java에선 import -->

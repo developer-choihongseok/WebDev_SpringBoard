@@ -13,6 +13,7 @@ import com.koreait.sboard.model.UserEntity;
 @Controller
 @RequestMapping("/user")	// 1차 주소값
 public class UserController {
+	
 	@Autowired
 	private UserService service;	// UserService의 기능들을 쓸 수 있다.
 	
@@ -29,7 +30,7 @@ public class UserController {
 		return null;
 	}
 	
-	@RequestMapping("/join")
+	@GetMapping("/join")
 	public void join() {}
 	
 	@PostMapping("/join")
@@ -43,5 +44,17 @@ public class UserController {
 		hs.invalidate();
 		
 		return "redirect:/user/login";
+	}
+	
+	@GetMapping("/findPw")
+	public void findPw() {}
+	
+	@GetMapping("/findPwProc")
+	public String findPwProc(String user_id) {
+		System.out.println("user_id : " + user_id);
+		
+		service.findPwProc(user_id);
+		
+		return "user/findPw";
 	}
 }

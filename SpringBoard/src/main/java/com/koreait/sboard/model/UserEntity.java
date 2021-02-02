@@ -1,8 +1,5 @@
 package com.koreait.sboard.model;
 
-import org.apache.ibatis.type.Alias;
-
-@Alias("UserEntity")	// 클래스 명과 똑같이 하는게 헷갈리지 않는다.
 public class UserEntity {
 	// 필드 : 값 저장용
 	private int i_user;		// 회원 번호
@@ -13,6 +10,7 @@ public class UserEntity {
 	private int gender;
 	private String ph;
 	private String profile_img;
+	private String email;
 	private String r_dt;
 	private String m_dt;
 	
@@ -63,6 +61,12 @@ public class UserEntity {
 	}
 	public void setProfile_img(String profile_img) {
 		this.profile_img = profile_img;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getR_dt() {
 		return r_dt;

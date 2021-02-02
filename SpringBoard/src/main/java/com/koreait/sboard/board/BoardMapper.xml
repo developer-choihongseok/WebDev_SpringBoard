@@ -95,6 +95,12 @@
 		ORDER BY i_cmt DESC
 	</select>
 	
+	<update id="updateCmt">
+		UPDATE t_board_cmt
+		SET ctnt = #{ctnt}
+		WHERE i_cmt = #{i_cmt} AND i_user = #{i_user}
+	</update>
+	
 	<delete id="deleteCmt">
 		DELETE FROM t_board_cmt
 		WHERE i_cmt = #{i_cmt}

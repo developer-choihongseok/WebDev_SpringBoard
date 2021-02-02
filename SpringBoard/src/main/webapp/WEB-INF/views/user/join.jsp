@@ -19,6 +19,9 @@
 				<input type="text" name="nm" placeholder="이름 입력" required="required">
 			</div>
 			<div>
+				<input type="email" name="email" placeholder="이메일 입력" required="required">
+			</div>
+			<div>
 				성별 :
 				<label>
 					여성<input type="radio" name="gender" value="0" checked="checked">

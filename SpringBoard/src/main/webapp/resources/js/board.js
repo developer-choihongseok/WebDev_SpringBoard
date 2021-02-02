@@ -16,12 +16,12 @@ function chk() {
 }
 
 // 삭제 버튼 클릭 -> fetch 사용(비동기 요청)
+// then : 응답이 올 때까지 마냥 기다리는 게 아니라 일단 실행해놓고, 서버가 응답할 때까지 다른 일을 할 수 있게끔 하게 하는 함수. then을 쓰면 then 뒤에 오는 것들은 서버 응답이 끝나면 실행이 된다.
 function clkDel(i_board, typ){
 	if(confirm('삭제 하시겠습니까?')){
 		fetch(`/board/del/${i_board}`,{
-			method: 'delete'	// get방식이랑 비슷함, put이 post방식이랑 비슷하다.
-		})
-		.then(function(res){
+			method: 'delete'
+		}).then(function(res){	
 			return res.json();	// 꼭 적어줘야 한다!!
 		}).then(function(myJson){
 			console.log(myJson);
@@ -106,12 +106,56 @@ function openCloseCmtModal(state){
 
 // 댓글 수정
 function modCmt(i_cmt, ctnt){
-	openCloseCmtModal('block')
+	openCloseCmtModal('block')	// 화면에 나타나게 한다.
 	
 	var cmtCtntElem = document.querySelector('.modal_wrap #cmtCtnt')
 	var cmtModBtn = document.querySelector('.modal_wrap #cmtModBtn')
 	
-	cmtCtntElem.value = ctnt
+	cmtCtntElem.value = ctnt	// 값이 빈 칸이였는데, ctnt값으로 완전히 교체가 된다.
+	cmtModBtn.onclick = ajax	// 수정 버튼 눌렀을 때, 실행.
+	
+	function ajax(){
+		var param = {
+			i_cmt,
+			ctnt: cmtCtntElem.value
+		}
+		
+		fetch('/board/updCmt', {
+			method: 'put',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(param)	// 객체를 문자열(JSON)로 바꿔준다.
+		}).then(res => res.json())	// "arrow function" : 문자를 최대한 축약해준다. 한 줄로 적으면 자동으로 return이 들어간다.
+		.then((myJson) => {
+			openCloseCmtModal('none')
+			
+			switch(myJson.result){
+				case 0:
+					alert('댓글 수정에 실패하셨습니다.')
+				return
+				case 1:
+					cmtObj.getCmtList()	// 리스트 가져오기
+				return
+			}
+		})
+		
+		/*
+		.then(function(res) {
+			return res.json()	// 응답한 결과물을 json형태로 반환해준다.
+		}).then((myJson) =>{
+			switch(myJson.result){
+			case 1:
+				openCloseCmtModal('none')
+				cmtObj.getCmtList()
+			return
+			case 0:
+				alert('댓글 수정 실패')
+			return
+			}
+		})
+		*/
+	}
 }
 
 // 댓글 삭제
@@ -139,6 +183,7 @@ function delCmt(i_cmt){
 // cmtObj : 객체
 var cmtObj = {
 	i_board: 0,
+	
 	createCmtTable: function(){
 		var tableElem = document.createElement('table')
 		tableElem.innerHTML = 
@@ -158,12 +203,11 @@ var cmtObj = {
 		if(this.i_board === 0){
 			return
 		}
-			
+		
 		fetch(`/board/cmtList?i_board=${this.i_board}`)
 			.then(function(res){
 				return res.json()
-		})
-		.then((list) => {
+		}).then((list) => {
 			cmtListElem.innerHTML = ''
 			this.proc(list)
 		})
@@ -187,6 +231,7 @@ var cmtObj = {
 		
 	createRecode: function(item) {
 		var etc = ''
+		
 		if(item.is_mycmt === 1){
 			etc = `<button onclick="modCmt(${item.i_cmt}, '${item.ctnt}')">수정</button>
 			<button onclick="delCmt(${item.i_cmt})">삭제</button>`
@@ -211,9 +256,11 @@ if(cmtListElem) {
 	// 모달창 닫기 버튼
 	var modalCloseElem = document.querySelector('.modal_close')
 	
-	modalCloseElem.addEventListener('click', function(){
+	if(modalCloseElem){
+		modalCloseElem.addEventListener('click', function(){
 		openCloseCmtModal('none')
-	})
+		})
+	}
 	
 	var i_board = document.querySelector('#i_board').dataset.id
 	cmtObj.i_board = i_board
@@ -290,19 +337,4 @@ if(cmtFrmElem){
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

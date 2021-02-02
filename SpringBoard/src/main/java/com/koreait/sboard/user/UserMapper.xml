@@ -8,9 +8,9 @@
 		  지정된 객체의 프로퍼티값이다. 즉, #{title}에는 객체의 getTitle() 반환값이 지정된다.-->
 	<insert id="insUser" parameterType="UserEntity">
 		INSERT INTO t_user
-		( user_id, user_pw, salt, nm, gender, ph )
+		( user_id, user_pw, salt, nm, gender, ph, email )
 		VALUES
-		( #{user_id}, #{user_pw}, #{salt}, #{nm}, #{gender}, #{ph} )
+		( #{user_id}, #{user_pw}, #{salt}, #{nm}, #{gender}, #{ph}, #{email} )
 	</insert>
 	
 	<!-- resultType : 클래스명 전체(즉, 매핑하려는 자바 클래스의 전체 경로를 입력) 또는 alias를 입력 -->

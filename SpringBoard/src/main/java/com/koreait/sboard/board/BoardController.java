@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -60,7 +61,7 @@ public class BoardController {
 	}
 	
 	@ResponseBody
-	@DeleteMapping("/del/{i_board}")
+	@DeleteMapping("/del/{i_board}")	// i_board 값으로 데이터를 삭제.
 	public Map<String, Object> del(BoardDTO param, HttpSession hs) {
 		System.out.println("i_board: " + param.getI_board());
 		param.setI_user(SecurityUtils.getLoginUserPK(hs));
@@ -92,8 +93,8 @@ public class BoardController {
 	@ResponseBody
 	@PostMapping("/insCmt")
 	public Map<String, Object> insCmt(@RequestBody BoardCmtEntity param, HttpSession hs){
-		System.out.println("i_board : " + param.getI_board());
-		System.out.println("ctnt: " + param.getCtnt());
+//		System.out.println("i_board : " + param.getI_board());
+//		System.out.println("ctnt: " + param.getCtnt());
 		
 		param.setI_user(SecurityUtils.getLoginUserPK(hs));
 		
@@ -106,20 +107,30 @@ public class BoardController {
 	@ResponseBody
 	@GetMapping("/cmtList")
 	public List<BoardCmtDomain> selCmtList(BoardCmtEntity param, HttpSession hs){
-		System.out.println("i_board : " + param.getI_board());
-		
 		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		
 		return service.selCmtList(param);
+	}
+	
+	@ResponseBody
+	@PutMapping("/updCmt")
+	public Map<String, Object> updCmt(@RequestBody BoardCmtEntity param, HttpSession hs){
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		
+		Map<String, Object> returnValue = new HashMap<String, Object>();
+		returnValue.put(Const.KEY_RESULT, service.updateCmt(param));
+		
+		return returnValue;
 	}
 	
 	@ResponseBody
 	@DeleteMapping("/delCmt")
 	public Map<String, Object> delCmt(BoardCmtEntity param, HttpSession hs){
 		param.setI_user(SecurityUtils.getLoginUserPK(hs));
-		Map<String, Object> returnValue = new HashMap<String, Object>();
 		
+		Map<String, Object> returnValue = new HashMap<String, Object>();
 		returnValue.put(Const.KEY_RESULT, service.deleteCmt(param));
+		
 		return returnValue;
 	}
-	
 }
