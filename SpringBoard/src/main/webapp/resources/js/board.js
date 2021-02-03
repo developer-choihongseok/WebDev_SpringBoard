@@ -142,7 +142,7 @@ function modCmt(i_cmt, ctnt){
 		
 		/*
 		.then(function(res) {
-			return res.json()	// 응답한 결과물을 json형태로 반환해준다.
+			return res.json()	// 응답 객체(= res)의 json() 메서드를 호출하면 응답 데이터를 객체 형태로 반환.
 		}).then((myJson) =>{
 			switch(myJson.result){
 			case 1:

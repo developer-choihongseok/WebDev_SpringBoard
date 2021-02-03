@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.koreait.sboard.model.AuthEntity;
 import com.koreait.sboard.model.UserEntity;
 
 @Controller
@@ -50,10 +51,10 @@ public class UserController {
 	public void findPw() {}
 	
 	@GetMapping("/findPwProc")
-	public String findPwProc(String user_id) {
-		System.out.println("user_id : " + user_id);
+	public String findPwProc(AuthEntity param) {
+		System.out.println("user_id : " + param.getUser_id());
 		
-		service.findPwProc(user_id);
+		service.findPwProc(param);
 		
 		return "user/findPw";
 	}

@@ -2,6 +2,7 @@ package com.koreait.sboard.user;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.koreait.sboard.model.AuthEntity;
 import com.koreait.sboard.model.UserEntity;
 
 // 필요한 서비스들을 나열할 수 있게 하기 위해서 인터페이스를 만든다(이유: 확장성과 유연성)
@@ -10,6 +11,12 @@ public interface UserMapper {
 
 	UserEntity selUser(UserEntity param);	// 사용자 정보의 값을 전부 가져오는 메서드.
 	int insUser(UserEntity param);
+	
+	/* ------------------- 비밀번호 찾기 ------------------- */
+	int insAuth(AuthEntity param);
+	AuthEntity selAuth(AuthEntity param);
+	int delAuth(AuthEntity param);
+	
 }
 
 /*

@@ -16,7 +16,7 @@
 	<!-- resultType : 클래스명 전체(즉, 매핑하려는 자바 클래스의 전체 경로를 입력) 또는 alias를 입력 -->
 	<select id="selUser" resultType="UserEntity">
 		SELECT 
-			i_user, nm	<!-- session에 박아둘려고 필요한 값 -->
+			i_user, nm, email	<!-- session에 박아둘려고 필요한 값 -->
 			<if test="i_user > 0">
 				, user_id, ph, gender, profile_img	<!-- 마이페이지에서 필요. -->
 			</if>
@@ -31,8 +31,28 @@
 				i_user = ${i_user}
 			</if>
 			<if test="user_id != null and user_id != ''">
-				and user_id = #{user_id}
+				and user_id = #{user_id}	<!-- 로그인 할 때 필요 -->
 			</if>
 		</where>
 	</select>
+	
+	<!-- ///////////////////// 비밀번호 찾기  ///////////////////// -->
+	
+	<insert id="insAuth">
+		INSERT INTO t_auth
+		(user_id, cd)
+		VALUES
+		(#{user_id}, #{cd})
+	</insert>
+	
+	<select id="selAuth" resultType="AuthEntity">
+		SELECT cd 
+		FROM t_auth
+		WHERE user_id = #{user_id}
+	</select>
+	
+	<delete id="delAuth">
+		DELETE FROM t_auth
+		WHERE user_id = #{user_id}
+	</delete>
 </mapper>
