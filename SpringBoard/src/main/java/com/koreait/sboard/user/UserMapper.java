@@ -12,11 +12,13 @@ public interface UserMapper {
 	UserEntity selUser(UserEntity param);	// 사용자 정보의 값을 전부 가져오는 메서드.
 	int insUser(UserEntity param);
 	
+	/* ------------------- 비밀번호 변경 ------------------- */
+	int updUser(UserEntity param);
+	
 	/* ------------------- 비밀번호 찾기 ------------------- */
 	int insAuth(AuthEntity param);
 	AuthEntity selAuth(AuthEntity param);
 	int delAuth(AuthEntity param);
-	
 }
 
 /*

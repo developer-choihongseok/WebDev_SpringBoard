@@ -28,7 +28,7 @@
 		</c:forEach>
 		<c:if test="${loginUser != null }">
 			<li><a href="/user/profile">프로필</a></li>
-			<li><a href="/user/changePw">비밀번호 변경</a></li>
+			<li><a href="/user/findPwAuth">비밀번호 변경</a></li>
 		</c:if>
 	</ul>
 </header>

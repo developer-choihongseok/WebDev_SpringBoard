@@ -1,13 +1,20 @@
 package com.koreait.sboard.user;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.koreait.sboard.common.Const;
+import com.koreait.sboard.model.AuthDTO;
 import com.koreait.sboard.model.AuthEntity;
 import com.koreait.sboard.model.UserEntity;
 
@@ -57,5 +64,21 @@ public class UserController {
 		service.findPwProc(param);
 		
 		return "user/findPw";
+	}
+	
+	@GetMapping("/findPwAuth")
+	public void findPwAuth() {}
+	
+	@ResponseBody
+	@PostMapping("/findPwAuth")
+	public Map<String, Object> findPwAuth(@RequestBody AuthDTO param) {
+		System.out.println("cd : " + param.getCd());
+		System.out.println("user_id : " + param.getUser_id());
+		System.out.println("user_pw : " + param.getUser_pw());
+		
+		Map<String, Object> rVal = new HashMap<String, Object>();
+		rVal.put(Const.KEY_RESULT, service.findPwAuthProc(param));
+		
+		return rVal;
 	}
 }

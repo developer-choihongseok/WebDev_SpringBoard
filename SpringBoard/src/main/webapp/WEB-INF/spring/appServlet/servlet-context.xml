@@ -70,7 +70,7 @@
 	
 	<beans:bean class="com.koreait.sboard.common.MailUtils">
 		<beans:property name="userId" value="chs02305"/>
-		<beans:property name="userPw" value="ghdtjr123#"/>
+		<beans:property name="userPw" value="ghdtjr12#"/>
 		<beans:property name="host" value="smtp.naver.com"/>
 		<beans:property name="port" value="587"/>
 		<beans:property name="fromEmail" value="chs02305@naver.com"/>

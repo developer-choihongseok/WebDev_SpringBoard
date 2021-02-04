@@ -36,8 +36,29 @@
 		</where>
 	</select>
 	
-	<!-- ///////////////////// 비밀번호 찾기  ///////////////////// -->
+	<!-- ///////////////////// 비밀번호 변경  ///////////////////// -->
+	<update id="updUser">
+		UPDATE t_user
+		<set>	<!-- set이 true이면 기능적으로, ,를 지워준다. -->
+			<if test="salt != null and salt != ''">
+				salt = #{salt},
+			</if>
+			<if test="user_pw != null and user_pw != ''">
+				user_pw = #{user_pw},
+			</if>
+			m_dt = now()
+		</set>
+		<where>	<!-- where이 true이면 기능적으로, ,를 지워준다. -->
+			<if test="i_user > 0">
+				i_user = #{i_user}
+			</if>
+			<if test="user_id != null and user_id != ''">
+				AND user_id = #{user_id}
+			</if>
+		</where>
+	</update>
 	
+	<!-- ///////////////////// 비밀번호 찾기  ///////////////////// -->
 	<insert id="insAuth">
 		INSERT INTO t_auth
 		(user_id, cd)
@@ -49,6 +70,9 @@
 		SELECT cd 
 		FROM t_auth
 		WHERE user_id = #{user_id}
+		<if test="cd != null and cd != ''">
+			AND cd = #{cd}
+		</if>
 	</select>
 	
 	<delete id="delAuth">

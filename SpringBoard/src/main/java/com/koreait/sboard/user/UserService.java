@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.koreait.sboard.common.Const;
 import com.koreait.sboard.common.MailUtils;
 import com.koreait.sboard.common.SecurityUtils;
+import com.koreait.sboard.model.AuthDTO;
 import com.koreait.sboard.model.AuthEntity;
 import com.koreait.sboard.model.UserEntity;
 
@@ -43,7 +44,7 @@ public class UserService {
 	}
 	
 	public int insUser(UserEntity param) {
-		String salt = SecurityUtils.gensalt();
+		String salt = SecurityUtils.getsalt();
 		String encryptPw = SecurityUtils.hashPassword(param.getUser_pw(), salt);
 		
 		param.setSalt(salt);
@@ -61,7 +62,7 @@ public class UserService {
 		UserEntity vo = mapper.selUser(param2);
 				
 		if(vo == null) {
-			return 2;
+			return 0;
 		}
 		
 		String email = vo.getEmail();
@@ -76,6 +77,27 @@ public class UserService {
 		
 		System.out.println("email : " + email);
 		
-		return mailUtils.sendFindEmail(email, code);
+		return mailUtils.sendFindPwEmail(email, param.getUser_id(), code);
+	}
+	
+	// 비밀번호를 변경
+	public int findPwAuthProc(AuthDTO param) {
+		// cd, user_id 확인 작업
+		AuthEntity ae = mapper.selAuth(param);
+		
+		if(ae == null) {
+			return 0;
+		}
+		
+		// 비밀번호 암호화
+		String salt = SecurityUtils.getsalt();
+		String encryptPw = SecurityUtils.hashPassword(param.getUser_pw(), salt);
+		
+		UserEntity param2 = new UserEntity();
+		param2.setUser_id(param.getUser_id());
+		param2.setUser_pw(encryptPw);
+		param2.setSalt(salt);
+		
+		return mapper.updUser(param2);
 	}
 }

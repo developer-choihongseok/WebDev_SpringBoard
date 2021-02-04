@@ -40,11 +40,23 @@ public class MailUtils {
 		this.fromEmail = fromEmail;
 	}
 	
-	public int sendFindEmail(final String toEmail, final String code) {
+	public int sendFindPwEmail(final String toEmail, final String user_id, final String code) {
 		String subject = "sboard 비밀번호 찾기 인증 이메일 입니다.";
-		String body = String.format("<div>안녕하세요. 코드는 %s입니다.</div>", code);
 		
-		return sendMail(toEmail, subject, body);
+		StringBuilder sb = new StringBuilder();
+		
+		// 체인 기법 : 자기 자신의 주소값을 리턴하기 때문에, '체인 기법'이라 부른다.
+		sb.append("<div>")
+		.append("<a href=\"http://localhost:9090/user/findPwAuth?cd=")	// \" : 쌍 따옴표 표시하게 해준다.
+		.append(code)
+		.append("&user_id=")
+		.append(user_id)
+		.append("\" target=\"_blank\">비밀번호 변경하러 가기</a>")	// \" : 쌍 따옴표 표시하게 해준다.
+		.append("</div>");
+		
+		// <div><a href="http://localhost:9090/user/findPwAuth?cd=6767&user_id=seok" target="_blank">비밀번호 변경하러 가기</a></div>
+		
+		return sendMail(toEmail, subject, sb.toString());
 	}
 	
 	// 매개변수 줄 때, final 주는 걸 추천!!
@@ -56,10 +68,10 @@ public class MailUtils {
 			prop.put("mail.smtp.auth", "true");
 			prop.put("mail.smtp.starttls.enable", "true");
 			prop.put("mail.smtp.port", port);
-			prop.put("mail.smtp.host", host);
+			prop.put("mail.smtp.host", host);	// 이메일 발송을 처리해줄 STMP 서버를 나타낸다.
 			prop.put("mail.smtp.ssl.trust", host);
 			
-			// Session 생성
+			// SMTP 서버 정보와 사용자 정보를 기반으로 Session 클래스의 인스턴스를 생성
 			Session session = Session.getDefaultInstance(prop, new Authenticator() {
 				protected javax.mail.PasswordAuthentication getPasswordAuthentication(){
 					return new javax.mail.PasswordAuthentication(userId, userPw);

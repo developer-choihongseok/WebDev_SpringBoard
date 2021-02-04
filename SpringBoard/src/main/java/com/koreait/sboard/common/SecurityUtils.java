@@ -5,7 +5,6 @@ import javax.servlet.http.HttpSession;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.koreait.sboard.model.UserEntity;
-
 /*
   Salt -> 원본 데이터의 앞 혹은 뒤에 다른 임의의 데이터를 끼워놓는 것을 말한다.
   		    그러므로, 완전히 다른 결과가 나오게 된다!
@@ -28,7 +27,7 @@ public class SecurityUtils {
 		return loginUser == null ? -1 : loginUser.getI_user();
 	}
 	
-	public static String gensalt() {
+	public static String getsalt() {
 		return BCrypt.gensalt();
 	}
 	
