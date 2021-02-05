@@ -86,7 +86,9 @@ public class UserService {
 		AuthEntity ae = mapper.selAuth(param);
 		
 		if(ae == null) {
-			return 0;
+			return 0;	// 아이디 없음
+		} else if(ae.getRest_sec() > Const.AUTH_REST_SEC) {
+			return 2;	// 인증시간 초과
 		}
 		
 		// 비밀번호 암호화
