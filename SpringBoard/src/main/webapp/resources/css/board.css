@@ -13,6 +13,19 @@
     cursor: pointer;
 }
 
+.boardWrite a button{
+	position: relative;
+    left: 30em;
+}
+
+#listFrm > select{
+	position: relative;
+    left: 30em;
+}
+
+.pageContainer .page{
+	cursor: pointer;
+}
 /*
  position: static 속성을 가지고 있지 않은 부모를 기준으로 움직인다. 
   만약 부모 중에 포지션이 relative, absolute, fixed인 태그가 없다면,

@@ -117,12 +117,12 @@ if(findPwAuthFrmElem){
 		}
 		
 		fetch('/user/findPwAuth',{
-			method: 'POST',
+			method: 'POST',	// 데이터를 보내줄테니, 서버의 DB에 저장을 요청.
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json'	// JSON 형태의 데이터를 주고 싶을 때 무조건 작성.
 			},
-			body: JSON.stringify(param)
-		}).then(res => res.json())
+			body: JSON.stringify(param)	// JSON 객체를 String 객체(= 텍스트)로 변환 시켜준다.
+		}).then(res => res.json())	// JSON.parse()의 역할을 한다 : 다시 JS 객체로 변환하는 과정. json() : JSON을 이용해서 텍스트를 JS 객체로 parse한 결과를 담은 Promise 객체를 다시 반환한다.
 		.then(myJson => {
 			proc(myJson)
 		})

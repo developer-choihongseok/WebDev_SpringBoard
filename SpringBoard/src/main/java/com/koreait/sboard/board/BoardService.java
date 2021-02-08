@@ -10,6 +10,7 @@ import com.koreait.sboard.model.BoardCmtEntity;
 import com.koreait.sboard.model.BoardDTO;
 import com.koreait.sboard.model.BoardDomain;
 import com.koreait.sboard.model.BoardEntity;
+import com.koreait.sboard.model.BoardParentDomain;
 
 @Service
 public class BoardService {
@@ -17,11 +18,27 @@ public class BoardService {
 	@Autowired
 	private BoardMapper mapper;
 	
-	public List<BoardDomain> selBoardList(BoardDTO param){
+	public BoardParentDomain selBoardList(BoardDTO param){
 		if(param.getTyp() == 0) {
 			param.setTyp(1);
 		}
-		return mapper.selBoardList(param);
+		if(param.getRecordCntPerPage() == 0) {
+			param.setRecordCntPerPage(5);
+		}
+		if(param.getPage() == 0) {
+			param.setPage(1);
+		}
+		
+		int sIdx = (param.getPage() - 1) * param.getRecordCntPerPage();
+		param.setsIdx(sIdx);
+		
+		BoardParentDomain bpd = new BoardParentDomain();
+		bpd.setMaxPageNum(mapper.selMaxPageNum(param));
+		bpd.setList(mapper.selBoardList(param));
+		bpd.setPage(param.getPage());
+		bpd.setRecordCntPerPage(param.getRecordCntPerPage());	// 내가 몇개 짜리 선택 했는지를 유지시켜게 하기 위함.
+		
+		return bpd;
 	}
 	
 	public int insertBoard(BoardEntity param) {
@@ -29,7 +46,8 @@ public class BoardService {
 	}
 	
 	public BoardDomain selBoard(BoardDTO param) {
-		mapper.updateBoardHits(param);	// 조회  수 올리기
+		mapper.updateBoardHits(param);	// 조회 수 올리기
+		
 		return mapper.selBoard(param);
 	}
 	

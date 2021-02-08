@@ -121,7 +121,7 @@ function modCmt(i_cmt, ctnt){
 		}
 		
 		fetch('/board/updCmt', {
-			method: 'put',
+			method: 'put',	// 데이터를 보내줄테니, 서버에 존재하는 정보를 update방식으로 처리.
 			headers: {
 				'Content-Type': 'application/json'
 			},

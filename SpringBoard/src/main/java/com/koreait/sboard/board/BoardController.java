@@ -36,7 +36,7 @@ public class BoardController {
 	
 	@GetMapping("/list")
 	public void list(Model model, BoardDTO param){
-		model.addAttribute(Const.KEY_LIST, service.selBoardList(param));
+		model.addAttribute(Const.KEY_DATA, service.selBoardList(param));
 	}
 	
 	@GetMapping("/reg")

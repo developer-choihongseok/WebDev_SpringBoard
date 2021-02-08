@@ -1,8 +1,5 @@
 package com.koreait.sboard.model;
 
-import org.apache.ibatis.type.Alias;
-
-@Alias("BoardDomain")
 public class BoardDomain extends BoardEntity{
 	
 	private String writer_nm;

@@ -12,9 +12,11 @@ import com.koreait.sboard.model.BoardEntity;
 
 @Mapper
 public interface BoardMapper {
+	int insertBoard(BoardEntity param);
+	int selMaxPageNum(BoardDTO param);	// 페이징
+	
 	List<BoardDomain> selBoardList(BoardDTO param);
 	
-	int insertBoard(BoardEntity param);
 	BoardDomain selBoard(BoardDTO param);	// 읽기
 	int updateBoard(BoardEntity param);
 	int updateBoardHits(BoardDTO param);
