@@ -6,6 +6,9 @@ public class BoardDTO extends BoardEntity{
 	private int sIdx;
 	private int page;
 	
+	private int searchType;	// 검색 타입
+	private String searchText;	// 글자
+	
 	public int getRecordCntPerPage() {
 		return recordCntPerPage;
 	}
@@ -23,5 +26,17 @@ public class BoardDTO extends BoardEntity{
 	}
 	public void setPage(int page) {
 		this.page = page;
+	}
+	public int getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(int searchType) {
+		this.searchType = searchType;
+	}
+	public String getSearchText() {
+		return searchText;
+	}
+	public void setSearchText(String searchText) {
+		this.searchText = searchText;
 	}
 }

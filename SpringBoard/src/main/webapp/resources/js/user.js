@@ -1,3 +1,5 @@
+'use strict'
+
 // 기본 이미지 사용(프로필 이미지 삭제)
 function delProfileImg(){
 	axios.get('/user/delProfileImg.korea').then(function(res){

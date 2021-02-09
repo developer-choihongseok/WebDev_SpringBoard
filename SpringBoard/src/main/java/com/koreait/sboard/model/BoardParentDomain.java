@@ -9,6 +9,9 @@ public class BoardParentDomain {
 	private int page;
 	private int recordCntPerPage;
 	
+	private int startPage;
+	private int endPage;
+	
 	public int getMaxPageNum() {
 		return maxPageNum;
 	}
@@ -32,5 +35,17 @@ public class BoardParentDomain {
 	}
 	public void setRecordCntPerPage(int recordCntPerPage) {
 		this.recordCntPerPage = recordCntPerPage;
+	}
+	public int getStartPage() {
+		return startPage;
+	}
+	public void setStartPage(int startPage) {
+		this.startPage = startPage;
+	}
+	public int getEndPage() {
+		return endPage;
+	}
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
 	}
 }

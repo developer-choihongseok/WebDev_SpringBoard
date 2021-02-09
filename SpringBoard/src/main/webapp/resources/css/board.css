@@ -16,15 +16,35 @@
 .boardWrite a button{
 	position: relative;
     left: 30em;
+    top: 1em;
+}
+
+#searchWindow #searchType{
+	position: relative;
+    left: 88.5em;
+    top: 1em;
+}
+
+#searchWindow > input{
+	position: relative;
+    left: 88.5em;
+    top: 1em;
 }
 
 #listFrm > select{
 	position: relative;
     left: 30em;
+    bottom: .5em;
 }
 
 .pageContainer .page{
 	cursor: pointer;
+}
+
+.page.selected{
+	color: #e74c3c;
+	font-weight: bold;
+	font-size: 1.2rem;	/* rem : 비율을 뜻한다. 즉, 1.2배를 뜻한다.*/
 }
 /*
  position: static 속성을 가지고 있지 않은 부모를 기준으로 움직인다. 

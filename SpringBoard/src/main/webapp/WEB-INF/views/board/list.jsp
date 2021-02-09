@@ -13,34 +13,37 @@
 		</div>
 	</c:if>
 	
+	<div>
+		<span id="searchWindow">
+			<select id="searchType">
+				<option value="1" ${param.searchType == 1 ? 'selected' : '' }>제목</option>
+				<option value="2" ${param.searchType == 2 ? 'selected' : '' }>내용</option>
+				<option value="3" ${param.searchType == 3 ? 'selected' : '' }>제목+내용</option>
+				<option value="4" ${param.searchType == 4 ? 'selected' : '' }>작성자</option>
+			</select>
+			<input type="search" id="searchText" value="${param.searchText }">
+			<input type="submit" value="검색" onclick="getBoardList()">
+		</span>
+				
+		<form id="listFrm" action="/board/list" method="get">
+			<input type="hidden" name="typ">
+			<input type="hidden" name="searchType" value="0">
+			<input type="hidden" name="searchText">
+			<input type="hidden" name="page" value="1">
+			<select name="recordCntPerPage" onchange="getBoardList()">
+				<c:forEach begin="5" end="40" step="5" var="p">
+					<!-- <option value="5" ${requestScope.data.recordCntPerPage == 5 ? 'selected' : ''}>5개</option>  -->
+					<option value="${p }" ${requestScope.data.recordCntPerPage == pageScope.p ? 'selected' : '' }>${p }개</option>							
+				</c:forEach>
+			</select>
+		</form>
+	</div>
+	
 	<c:choose>
 		<c:when test="${fn:length(requestScope.data.list) == 0 }">	<!-- requestScope.data : BoardParentDomain -->
 			<div>게시글이 없습니다.</div>
 		</c:when>
 		<c:otherwise>
-			<div>
-				<span id="">
-					<select id="searchType">
-						<option value="1">제목</option>
-						<option value="2">내용</option>
-						<option value="3">제목+내용</option>
-						<option value="4">작성자</option>
-					</select>
-					<input type="search" id="searchTxt">
-					<input type="submit" value="검색" onclick="">
-				</span>
-				
-				<form id="listFrm" action="/board/list" method="get">
-					<input type="hidden" name="typ">
-					<input type="hidden" name="page" value="1">
-					<select name="recordCntPerPage" onchange="getBoardList()">
-						<c:forEach begin="5" end="20" step="5" var="p">
-							<!-- <option value="5" ${requestScope.data.recordCntPerPage == 5 ? 'selected' : ''}>5개</option>  -->
-							<option value="${p }" ${requestScope.data.recordCntPerPage == pageScope.p ? 'selected' : '' }>${p }개</option>							
-						</c:forEach>
-					</select>
-				</form>
-			</div>
 			<table border="1">
 				<thead>
 					<tr>
@@ -81,22 +84,22 @@
 	
 	<!-- 페이징 -->
 	<div class="pageContainer">
+		<c:if test="${requestScope.data.startPage > 1}">
+			<span class="page" onclick="getBoardList(1)">1</span>
+			<span>...</span>
+		</c:if>
+		
 		<%-- 1부터 ${pageCnt }까지 자연수를 순차적으로 출력함. --%>
-		<c:forEach begin="1" end="${requestScope.data.maxPageNum }" var="i">
-			<span class="page" onclick="getBoardList(${i})">${i }</span>
+		<c:forEach begin="${requestScope.data.startPage }" end="${requestScope.data.endPage }" var="i">
+			<span class="page ${requestScope.data.page == i ? 'selected' : ''}" onclick="getBoardList(${i})">${i }</span>
 				<%-- <a href="list?typ=${typ }&page=${i }">${i }</a> --%>
 		</c:forEach>
+		
+		<c:if test="${requestScope.data.endPage < requestScope.data.maxPageNum }">
+			<span>...</span>
+			<span class="page" onclick="getBoardList(${requestScope.data.maxPageNum})">${requestScope.data.maxPageNum }</span>
+		</c:if>
 	</div>
 </div>
 
 <script src="/res/js/board/list.js"></script>	<!-- 자동으로 구조를 잡아줄려고 만들어 두었다. -->
-
-
-
-
-
-
-
-
-
-

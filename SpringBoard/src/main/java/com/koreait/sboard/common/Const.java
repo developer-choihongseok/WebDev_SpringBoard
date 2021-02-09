@@ -14,6 +14,9 @@ public class Const {
 	public static final String KEY_DATA = "data";
 	public static final String KEY_RESULT = "result";
 	
-	// 인증 시간 제한 => 5분
-	public static final int AUTH_REST_SEC = 10;
+	// 비밀번호 변경 제한시간 => 5분(= 300초)
+	public static final int AUTH_REST_SEC = 300;
+	
+	// 기준 페이지 값에서 앞,뒤쪽으로 나와야 하는 페이지 수.
+	public static final int PAGE_SIDE_NUM = 2;
 }
