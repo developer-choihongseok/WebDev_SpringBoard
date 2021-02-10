@@ -1,9 +1,14 @@
 package com.koreait.sboard.user;
 
+import java.io.File;
+import java.util.UUID;
+
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.koreait.sboard.common.Const;
 import com.koreait.sboard.common.MailUtils;
@@ -11,6 +16,7 @@ import com.koreait.sboard.common.SecurityUtils;
 import com.koreait.sboard.model.AuthDTO;
 import com.koreait.sboard.model.AuthEntity;
 import com.koreait.sboard.model.UserEntity;
+import com.koreait.sboard.model.UserImgEntity;
 
 @Service
 public class UserService {
@@ -21,9 +27,13 @@ public class UserService {
 	@Autowired
 	private MailUtils mailUtils;
 	
+	public UserEntity selUser(UserEntity param) {
+		return mapper.selUser(param);
+	}
+	
 	// 1 : 로그인 성공, 2 : 아이디 없음, 3 : 비밀번호 틀림
 	public int login(UserEntity param, HttpSession hs) {
-		UserEntity dbData = mapper.selUser(param);
+		UserEntity dbData = selUser(param);
 		
 		if(dbData == null) {
 			return 2;	// 아이디 없음
@@ -59,7 +69,7 @@ public class UserService {
 		UserEntity param2 = new UserEntity();
 		param2.setUser_id(param.getUser_id());
 		
-		UserEntity vo = mapper.selUser(param2);
+		UserEntity vo = selUser(param2);
 				
 		if(vo == null) {
 			return 0;
@@ -101,5 +111,45 @@ public class UserService {
 		param2.setSalt(salt);
 		
 		return mapper.updUser(param2);
+	}
+	
+	// 이미지 업로드
+	public int profileUpload(MultipartFile[] imgs, HttpSession hs) {
+		int i_user = SecurityUtils.getLoginUserPK(hs);
+		
+		// 톰캣이 구동되는 위치를 잡기가 편하다.
+		String basePath = hs.getServletContext().getRealPath("/resources/img/user/" + i_user + "/");
+		System.out.println("basePath : " + basePath);
+		
+		try {
+			for(int i = 0; i < imgs.length; i++) {
+				MultipartFile file = imgs[i];
+				String fileNm = UUID.randomUUID().toString();	// 파일 이름 중복 막음.
+				String ext = FilenameUtils.getExtension(file.getOriginalFilename());	// 파일 확장자
+				fileNm += "." + ext;	// DB에 저장할 값.
+				File target = new File(basePath + fileNm);
+				file.transferTo(target);
+				
+				// 메인 이미지 업데이트
+				if(i == 0) {
+					UserEntity param = new UserEntity();
+					param.setI_user(i_user);
+					param.setProfile_img(fileNm);
+					
+					mapper.updUser(param);
+				}
+				
+				UserImgEntity param2 = new UserImgEntity();
+				param2.setI_user(i_user);
+				param2.setImg(fileNm);
+				
+				mapper.insertUserImg(param2);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return 1;
 	}
 }

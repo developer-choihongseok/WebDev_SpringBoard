@@ -5,7 +5,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <div>
-	<a href="/board/list?typ=${requestScope.data.typ }">게시판으로 돌아가기</a>
+	<%-- <a href="/board/list?typ=${requestScope.data.typ }">게시판으로 돌아가기</a> --%>
+	<span class="pointer" onclick="back()">돌아가기</span>
 	
 	<c:if test="${data.i_user == loginUser.i_user }">
 		<button onclick="clkDel(${requestScope.data.i_board}, ${requestScope.data.typ });">삭제</button>
@@ -18,7 +19,7 @@
 		<div>번호 : ${requestScope.data.seq }</div>
 		<div>조회수 : ${requestScope.data.hits }</div>
 		<div>
-			<span class="profile-td-nm">작성자: </span>
+			작성자: 
 			<c:if test="${requestScope.data.profile_img == null }">
 				<div class="circular--landscape circular--size40">
 					<img id="profileImg" src="/res/img/basic_profile.jpg">
@@ -29,11 +30,40 @@
 					<img id="profileImg" src="/res/img/${requestScope.data.i_user }/${requestScope.data.profile_img}">
 				</div>
 			</c:if>
-			${requestScope.data.writer_nm }
+			<span class="profile-td-nm">
+				<c:choose>
+					<c:when test="${param.searchType == 4 && param.searchText != '' }">
+						${fn:replace(data.writer_nm, param.searchText, '<mark>' += param.searchText += '</mark>')}
+					</c:when>
+					<c:otherwise>
+						${data.writer_nm }
+					</c:otherwise>
+				</c:choose>
+			</span>
 		</div>
-		<div>제목 : ${requestScope.data.title }</div>
+		<div>
+			제목 : 
+				<c:choose>
+					<c:when test="${(param.searchType == 1 || param.searchType == 3) && param.searchText != '' }">
+						${fn:replace(data.title, param.searchText, '<mark>' += param.searchText += '</mark>')}
+					</c:when>
+					<c:otherwise>
+						${data.title }
+					</c:otherwise>
+				</c:choose>
+		</div>
 		<div>작성일 : ${requestScope.data.r_dt }</div>
-		<div>내용: ${requestScope.data.ctnt }</div>
+		<div>
+			내용:
+				<c:choose>
+					<c:when test="${(param.searchType == 2 || param.searchType == 3) && param.searchText != '' }">
+						${fn:replace(data.ctnt, param.searchText, '<mark>' += param.searchText += '</mark>')}
+					</c:when>
+					<c:otherwise>
+						${data.ctnt }
+					</c:otherwise>
+				</c:choose>
+		</div>
 	</div>
 	
 	<div style="margin-top: 20px;">

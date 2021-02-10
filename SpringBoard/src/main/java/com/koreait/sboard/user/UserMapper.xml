@@ -46,6 +46,9 @@
 			<if test="user_pw != null and user_pw != ''">
 				user_pw = #{user_pw},
 			</if>
+			<if test="profile_img != null and profile_img != ''">
+				profile_img = #{profile_img},
+			</if>
 			m_dt = now()
 		</set>
 		<where>	<!-- where이 true이면 기능적으로, ,를 지워준다. -->
@@ -57,6 +60,13 @@
 			</if>
 		</where>
 	</update>
+	
+	<insert id="insertUserImg">
+		INSERT INTO t_user_img
+		(i_user, img)
+		VALUES
+		(#{i_user}, #{img})
+	</insert>
 	
 	<!-- ///////////////////// 비밀번호 찾기  ///////////////////// -->
 	<insert id="insAuth">

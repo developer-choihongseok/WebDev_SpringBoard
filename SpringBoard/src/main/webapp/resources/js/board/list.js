@@ -7,6 +7,19 @@ var typElem = listFrmElem.typ
 var searchTypeElem = document.querySelector('#searchType')
 var searchTextElem = document.querySelector('#searchText')
 
+// 글 번호 클릭 시, 해당 url로 이동
+function clkArticle(i_board, searchType, searchText) {
+	var url = `/board/detail?i_board=${i_board}&searchType=${searchType}&searchText=${searchText}`; 
+	location.href = url;	// 주소값 이동
+}
+
+// 검색 테스트에서 Enter 치면 검색되게 처리
+function doSearch(e){
+	if(e.keyCode === 13){
+		getBoardList()
+	}
+}
+
 function getBoardList(page){	// page : undefined
 	var searchTextValue = searchTextElem.value	// 무언가 적혀 있는지를 확인.
 	

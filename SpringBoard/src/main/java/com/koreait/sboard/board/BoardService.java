@@ -40,9 +40,10 @@ public class BoardService {
 		bpd.setRecordCntPerPage(param.getRecordCntPerPage());	// 내가 몇 개 짜리 선택 했는지를 유지시키게 하기 위함.
 		
 		final int SIDE_NUM = Const.PAGE_SIDE_NUM;
-		int pageLen = SIDE_NUM * 2 + 1;
+		int pageLen = SIDE_NUM * 2;
 		int page = param.getPage();	// 페이지 번호
 		int maxPage = bpd.getMaxPageNum();
+		
 		int startPage = page - SIDE_NUM;
 		int endPage = page + SIDE_NUM;
 		
@@ -50,13 +51,13 @@ public class BoardService {
 			if(startPage < 1) {	// 나타내는 한곳의 길이가 현재 페이지보다 작을 때..
 				startPage = 1;
 			} else if(startPage > maxPage - pageLen) {	// 전체길이 - 나타내는 양쪽의 길이가 나타내는 페이지 왼쪽보다 클 때..
-				startPage = maxPage - pageLen + 1;	// 나타내는 곳의 왼쪽에는 총 페이지 - 나타내는 양쪽 길이 + 1을 넣어준다.
+				startPage = maxPage - pageLen;			// 나타내는 곳의 왼쪽에는 총 페이지 - 나타내는 양쪽 길이 + 1을 넣어준다.
 			}
 			
 			if(endPage > maxPage) {
 				endPage = maxPage;
-			}else if(endPage < pageLen) {
-				endPage = pageLen;	// 나타내는 오른쪽에는 나타내는 양쪽의 페이지값을 넣어준다.
+			}else if(endPage <= pageLen) {
+				endPage = pageLen + 1;	// 나타내는 오른쪽에는 나타내는 양쪽의 페이지값을 넣어준다.
 			}
 		} else {
 			startPage = 1;

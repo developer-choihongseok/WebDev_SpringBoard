@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.koreait.sboard.model.AuthEntity;
 import com.koreait.sboard.model.UserEntity;
+import com.koreait.sboard.model.UserImgEntity;
 
 // 필요한 서비스들을 나열할 수 있게 하기 위해서 인터페이스를 만든다(이유: 확장성과 유연성)
 @Mapper
@@ -19,6 +20,8 @@ public interface UserMapper {
 	int insAuth(AuthEntity param);
 	AuthEntity selAuth(AuthEntity param);
 	int delAuth(AuthEntity param);
+	
+	int insertUserImg(UserImgEntity param);
 }
 
 /*

@@ -1,11 +1,5 @@
 'use strict'
 
-// 글 번호 클릭 시, 해당 url로 이동
-function clkArticle(i_board) {
-	var url = `/board/detail?i_board=${i_board}`; 
-	location.href = url;	// 주소값 이동
-}
-
 // 지금은 사용 X, 혹시나 나중에 비속어가 있는지 체크하는 용도로 사용.
 function chk() {
 	var frm = document.querySelector('#frm');	// 없어도 실행 되는데, 확실하게 해주기 위함!!

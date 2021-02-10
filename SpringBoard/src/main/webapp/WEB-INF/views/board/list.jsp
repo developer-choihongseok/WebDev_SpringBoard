@@ -21,7 +21,7 @@
 				<option value="3" ${param.searchType == 3 ? 'selected' : '' }>제목+내용</option>
 				<option value="4" ${param.searchType == 4 ? 'selected' : '' }>작성자</option>
 			</select>
-			<input type="search" id="searchText" value="${param.searchText }">
+			<input type="search" id="searchText" value="${param.searchText }" onkeyup="doSearch(event)">
 			<input type="submit" value="검색" onclick="getBoardList()">
 		</span>
 				
@@ -57,9 +57,18 @@
 				</thead>
 				<!-- list는 BoardController의 list 메서드에서 사용 -->
 				<c:forEach items="${requestScope.data.list }" var="item">
-					<tr class="pointer" onclick="clkArticle(${item.i_board })">
+					<tr class="pointer" onclick="clkArticle(${item.i_board }, ${param.searchType }, '${param.searchText }')">
 						<td align="center">${item.seq }</td>
-						<td align="center">${fn:length(item.title) > 12 ? fn:substring(item.title, 0, 11) += '...' : item.title }</td>
+						<td align="center">
+							<c:choose>
+								<c:when test="${(param.searchType == 1 || param.searchType == 3) && param.searchText != '' }">
+									${fn:replace(item.title, param.searchText, '<mark>' += param.searchText += '</mark>')}
+								</c:when>
+								<c:otherwise>
+									${item.title }
+								</c:otherwise>
+							</c:choose>
+						</td>
 						<td align="center">${item.hits }</td>
 						<td align="center">${item.r_dt }</td>
 						<td class="profile-td" align="center">
@@ -73,7 +82,16 @@
 									<img id="profileImg" src="/res/img/${item.i_user }/${item.profile_img}">
 								</div>
 							</c:if>
-							<span class="profile-td-nm">${item.writer_nm }</span>
+							<span class="profile-td-nm">
+								<c:choose>
+									<c:when test="${param.searchType == 4 && param.searchText != '' }">
+										${fn:replace(item.writer_nm, param.searchText, '<mark>' += param.searchText += '</mark>')}
+									</c:when>
+									<c:otherwise>
+										${item.writer_nm }
+									</c:otherwise>
+								</c:choose>
+							</span>
 						</td>
 						<td align="center">${item.favorite_cnt }</td>
 					</tr>
@@ -89,7 +107,6 @@
 			<span>...</span>
 		</c:if>
 		
-		<%-- 1부터 ${pageCnt }까지 자연수를 순차적으로 출력함. --%>
 		<c:forEach begin="${requestScope.data.startPage }" end="${requestScope.data.endPage }" var="i">
 			<span class="page ${requestScope.data.page == i ? 'selected' : ''}" onclick="getBoardList(${i})">${i }</span>
 				<%-- <a href="list?typ=${typ }&page=${i }">${i }</a> --%>
