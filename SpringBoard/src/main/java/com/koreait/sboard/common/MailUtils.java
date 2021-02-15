@@ -47,7 +47,7 @@ public class MailUtils {
 		
 		// 체인 기법 : 자기 자신의 주소값을 리턴하기 때문에, '체인 기법'이라 부른다.
 		sb.append("<div>")
-		.append("<a href=\"http://localhost:9090/user/findPwAuth?cd=")	// \" : 쌍 따옴표 표시하게 해준다.
+		.append("<a href=\"http://localhost:8090/user/findPwAuth?cd=")	// \" : 쌍 따옴표 표시하게 해준다.
 		.append(code)
 		.append("&user_id=")
 		.append(user_id)

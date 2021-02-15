@@ -1,6 +1,7 @@
 package com.koreait.sboard.user;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import com.koreait.sboard.common.SecurityUtils;
 import com.koreait.sboard.model.AuthDTO;
 import com.koreait.sboard.model.AuthEntity;
 import com.koreait.sboard.model.UserEntity;
+import com.koreait.sboard.model.UserImgEntity;
 
 @Controller
 @RequestMapping("/user")	// 1차 주소값
@@ -101,5 +103,11 @@ public class UserController {
 		System.out.println("imgs : " + imgs.length);
 		
 		return service.profileUpload(imgs, hs);
+	}
+	
+	@ResponseBody
+	@GetMapping("/profileImgList")
+	public List<UserImgEntity> profileImgList(UserEntity param){
+		return service.selUserImgList(param);
 	}
 }

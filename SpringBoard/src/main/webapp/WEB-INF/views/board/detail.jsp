@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%-- functions : 문자열을 처리하는 함수 제공 --%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>	<%-- functions : 문자열을 처리하는 함수 제공 --%>
 
 <div>
 	<%-- <a href="/board/list?typ=${requestScope.data.typ }">게시판으로 돌아가기</a> --%>
@@ -88,7 +87,6 @@
 	
 	<c:if test="${loginUser != null }">
 		<div id="favoriteContainer" is_favorite="${data.is_favorite}" onclick="toggleFavorite(${data.i_board });">
-			<%-- ${data.is_favorite} --%>
 			<c:choose>
 				<c:when test="${data.is_favorite == 1 }">
 					<i class="fas fa-thumbs-up"></i>

@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%-- functions : 문자열을 처리하는 함수 제공 --%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>	<%-- functions : 문자열을 처리하는 함수 제공 --%>
 
 <div id="data" data-typ="${param.typ == null ? 1 : param.typ}">
 	<c:if test="${sessionScope.loginUser != null }">
@@ -72,7 +71,7 @@
 						<td align="center">${item.hits }</td>
 						<td align="center">${item.r_dt }</td>
 						<td class="profile-td" align="center">
-							<c:if test="${item.profile_img == null }">
+							<%-- <c:if test="${item.profile_img == null }">
 								<div class="circular--landscape circular--size40">
 									<img id="profileImg" src="/res/img/basic_profile.jpg">
 								</div>
@@ -81,7 +80,10 @@
 								<div class="circular--landscape circular--size40">
 									<img id="profileImg" src="/res/img/${item.i_user }/${item.profile_img}">
 								</div>
-							</c:if>
+							</c:if> --%>
+							<div class="circular--landscape circular--size40">
+								<img id="profileImg" src="/res/img/user/${item.i_user}/${item.profile_img}" onerror="this.src='/res/img/basic_profile.jpg'">
+							</div>
 							<span class="profile-td-nm">
 								<c:choose>
 									<c:when test="${param.searchType == 4 && param.searchText != '' }">

@@ -10,7 +10,7 @@
 <title>${title }</title>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <link rel="stylesheet" href="/res/css/common.css?ver=17">
-<link rel="stylesheet" href="/res/css/<tiles:getAsString name="categoryCSS"/>.css?ver=6">
+<link rel="stylesheet" href="/res/css/<tiles:getAsString name="categoryCSS"/>.css?ver=8">
 <script defer src="/res/js/common.js"></script>
 <script defer src="/res/js/<tiles:getAsString name="categoryJS"/>.js?ver=3"></script>
 </head>

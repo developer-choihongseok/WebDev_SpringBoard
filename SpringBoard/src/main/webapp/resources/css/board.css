@@ -15,25 +15,25 @@
 
 .boardWrite a button{
 	position: relative;
-    left: 30em;
+    left: 26em;
     top: 1em;
 }
 
 #searchWindow #searchType{
 	position: relative;
-    left: 88.5em;
+    left: 92.5em;
     top: 1em;
 }
 
 #searchWindow > input{
 	position: relative;
-    left: 88.5em;
+    left: 92.5em;
     top: 1em;
 }
 
 #listFrm > select{
 	position: relative;
-    left: 30em;
+    left: 26em;
     bottom: .5em;
 }
 

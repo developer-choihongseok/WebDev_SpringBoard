@@ -1,19 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
+<link rel="stylesheet" href="/res/css/user/profile.css">
 
 <div class="centerCont">
 	<!-- JS로 처리하는 부분 -->
 </div>
 
 <div>
-	<input type="file" id="inputImg" multiple accept="image/*">
+	<input type="file" id="inputImg" multiple accept="image/*">	<!-- image/* : 모든 타입의 이미지 파일이 허용됨. -->
 	<input type="submit" value="업로드" onclick="upload()">
 </div>
 
-<script src="/res/js/user/profile.js"></script>
+<div class="modalContainer hide">
+	<div class="modalContent">
+		<span class="pointer" onclick="closeModal()">닫기</span>
+		<div class="splide">
+			<div class="splide__track">
+				<div class="splide__list">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-<!-- enctype="multipart/form-data" : <form> 요소가 파일이나 이미지를 서버로 전송할 때 주로 사용.
-	request.getParameter()로 받아올 수 없다.
-	
-	multiple 속성을 주면 이미지 여러 개를 올릴 수 있다. 하지만 방법이 복잡하다..-->
+<!-- SPLIDE lib 이용 -->
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+<script src="/res/js/user/profile.js"></script>

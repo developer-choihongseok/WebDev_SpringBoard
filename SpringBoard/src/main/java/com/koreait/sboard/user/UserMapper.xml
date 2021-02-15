@@ -24,19 +24,24 @@
 				, salt, user_pw	<!-- session에는 필요없는 값이라서 분리 시킨 것. -->
 			</if>
 		FROM t_user
-		<!-- test조건이 true이면 WHERE i_user = ?를 자동으로 만들어 준다. 
-			 and가 where 다음에 오면 mybatis가 자동으로 뺴준다. -->
+		<!-- test조건이 true이면 WHERE i_user = ?를 자동으로 만들어 준다. and가 where 다음에 오면 mybatis가 자동으로 뺴준다. -->
 		<where>
 			<if test="i_user > 0">
 				i_user = ${i_user}
 			</if>
 			<if test="user_id != null and user_id != ''">
-				and user_id = #{user_id}	<!-- 로그인 할 때 필요 -->
+				AND user_id = #{user_id}	<!-- 로그인 할 때 필요 -->
 			</if>
 		</where>
 	</select>
 	
-	<!-- ///////////////////// 비밀번호 변경  ///////////////////// -->
+	<select id="selUserImgList" resultType="UserImgEntity">
+		SELECT *
+		FROM t_user_img
+		WHERE i_user = #{i_user}
+	</select>
+	
+	<!-- ///////////////////// 비밀번호, 프로필 이미지 변경  ///////////////////// -->
 	<update id="updUser">
 		UPDATE t_user
 		<set>	<!-- set이 true이면 기능적으로, ,를 지워준다. -->
@@ -51,7 +56,7 @@
 			</if>
 			m_dt = now()
 		</set>
-		<where>	<!-- where이 true이면 기능적으로, ,를 지워준다. -->
+		<where>
 			<if test="i_user > 0">
 				i_user = #{i_user}
 			</if>
