@@ -23,9 +23,10 @@ public interface UserMapper {
 	AuthEntity selAuth(AuthEntity param);
 	int delAuth(AuthEntity param);
 	
-	/* ------------------- 프로필 이미지 삽입 ------------------- */
+	/* ------------------- 프로필 이미지 삽입, 보기, 삭제 ------------------- */
 	int insertUserImg(UserImgEntity param);
 	List<UserImgEntity> selUserImgList(UserEntity param);
+	int delUserImg(UserImgEntity param);
 }
 
 /*

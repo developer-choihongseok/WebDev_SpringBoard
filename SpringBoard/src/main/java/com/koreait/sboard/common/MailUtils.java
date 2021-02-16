@@ -78,6 +78,7 @@ public class MailUtils {
 				}
 			});
 			
+			// 메일 송/수신 옵션 설정
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromEmail));
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
@@ -86,8 +87,9 @@ public class MailUtils {
 			MimeBodyPart mimeBodyPart = new MimeBodyPart();
 			mimeBodyPart.setContent(body, "text/html; charset=UTF-8");
 			
+			// 메일 콘텐츠 설정
 			Multipart multipart = new MimeMultipart();
-			multipart.addBodyPart(mimeBodyPart);
+			multipart.addBodyPart(mimeBodyPart);	// 메일 콘텐츠 - 내용
 			
 			message.setContent(multipart);
 			Transport.send(message);

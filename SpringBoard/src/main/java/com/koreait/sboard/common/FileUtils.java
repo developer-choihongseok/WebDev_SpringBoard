@@ -53,12 +53,22 @@ public class FileUtils {
 		try {
 			// 파일이 저장되어야 할 위치정보.
 			File file = new File(basePath, fileNm);	// 굳이 /를 적지 않아도, 자동으로 /를 넣어준다.
-			mf.transferTo(file);	// 파일을 지정한 target으로 쉽게 저장할 수 있다.
+			mf.transferTo(file);
 			
 		}catch(IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 		return fileNm;
+	}
+	
+	public boolean delFile(String path) {
+		String basePath = getBasePath("/resources");
+		File file = new File(basePath, path);
+		
+		if(file.exists()) {
+			 return file.delete();
+		}
+		return false;
 	}
 }

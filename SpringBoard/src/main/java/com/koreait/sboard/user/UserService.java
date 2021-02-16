@@ -168,4 +168,16 @@ public class UserService {
 		
 		return mapper.selUserImgList(param);
 	}
+	
+	public int delProfileImg(UserImgEntity param) {
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		
+		int result = mapper.delUserImg(param);
+		
+		if(result == 1) {	// 실제 이미지 삭제!!
+			String path = "/img/user/" + param.getI_user() + "/" + param.getImg();
+			fUtils.delFile(path);
+		}
+		return result;
+	}
 }
